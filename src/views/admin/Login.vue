@@ -16,7 +16,7 @@
           <template v-slot:heading>
             <div class="text-center">
               <h1 class="display-2 font-weight-bold mb-2">
-                Login
+                Admin Login
               </h1>
 
               <v-btn
@@ -71,10 +71,10 @@
   // import { mapActions } from 'vuex'
 
   export default {
-    name: 'UserLogin',
+    name: 'PagesLogin',
 
     components: {
-      PagesBtn: () => import('./components/Btn'),
+      PagesBtn: () => import('../pages/components/Btn'),
     },
 
     data: () => ({
@@ -105,7 +105,7 @@
       login () {
         this.$store.dispatch('userLogin', { email: this.email, password: this.password })
           .then(response => {
-            this.$router.push({ name: 'UserDashboard' })
+            this.$router.push({ name: 'AdminDashboard' })
           })
       },
     },

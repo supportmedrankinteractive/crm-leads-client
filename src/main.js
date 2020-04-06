@@ -13,8 +13,9 @@
 
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './router/'
 import store from './store'
+import { initialize } from './services/route-checker'
 import './plugins/base'
 import './plugins/chartist'
 import './plugins/vee-validate'
@@ -26,6 +27,8 @@ import axios from 'axios'
 axios.defaults.withCredentials = true
 
 Vue.config.productionTip = false
+
+initialize(store, router)
 
 new Vue({
   router,

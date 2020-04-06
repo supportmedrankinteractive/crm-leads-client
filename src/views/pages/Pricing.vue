@@ -48,7 +48,7 @@
 
 <script>
   export default {
-    name: 'PagesPricing',
+    name: 'UserDashboard',
 
     components: {
       PagesHeading: () => import('./components/Heading'),

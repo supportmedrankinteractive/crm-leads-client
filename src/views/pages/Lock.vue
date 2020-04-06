@@ -48,5 +48,9 @@
     components: {
       PagesBtn: () => import('./components/Btn'),
     },
+
+    mounted () {
+      // alert(JSON.parse(this.$store.state.user).is_approved)
+    },
   }
 </script>

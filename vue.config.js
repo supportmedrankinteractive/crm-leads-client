@@ -1,13 +1,6 @@
-const fs = require('fs')
-
 module.exports = {
   devServer: {
-    host: 'app.crm-leads.app',
-    https: {
-      key: fs.readFileSync('./server.key'),
-      cert: fs.readFileSync('./server.crt')
-    },
-    port: 443
+    host: 'app.crm-leads.test'
   },
 
   transpileDependencies: ['vue-world-map', 'vuetify'],
