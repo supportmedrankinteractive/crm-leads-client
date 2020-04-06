@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://crm-leads.test'
+axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
 
 Vue.use(Vuex)
 
