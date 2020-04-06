@@ -161,7 +161,7 @@
       search: undefined,
     }),
     mounted () {
-      console.log(JSON.parse(this.$store.state.user))
+      // console.log(JSON.parse(this.$store.state.user))
     },
   }
 </script>
