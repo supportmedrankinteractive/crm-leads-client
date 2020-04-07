@@ -55,20 +55,12 @@
           value: 'name',
         },
         {
-          text: 'Position',
+          text: 'Email',
           value: 'email',
         },
         {
-          text: 'Office',
-          value: 'office',
-        },
-        {
-          text: 'Age',
-          value: 'age',
-        },
-        {
-          text: 'Date',
-          value: 'date',
+          text: 'Approved',
+          value: 'is_approvedd',
         },
         {
           sortable: false,
