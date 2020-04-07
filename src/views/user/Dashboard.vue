@@ -4,7 +4,7 @@
     tag="section"
   >
     <div
-      v-if="JSON.parse($store.state.user).is_approved === 1"
+      v-if="$store.state.user.is_approved === 1"
     >
       <base-v-component
         heading="Data Tables"
@@ -161,7 +161,8 @@
       search: undefined,
     }),
     mounted () {
-      // console.log(JSON.parse(this.$store.state.user))
+      // console.log(JSON.parse(this.$store.state.user).is_approved)
+      // console.log(this.$store.state.user)
     },
   }
 </script>

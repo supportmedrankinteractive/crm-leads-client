@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <dashboard-core-app-bar
-      v-if="$store.getters.isAdmin || JSON.parse(this.$store.state.user).is_approved === 1"
+      v-if="$store.getters.isAdmin || $store.state.user.is_approved === 1"
       v-model="expandOnHover"
     />
 
     <dashboard-core-drawer
-      v-if="$store.getters.isAdmin || JSON.parse(this.$store.state.user).is_approved === 1"
+      v-if="$store.getters.isAdmin || $store.state.user.is_approved === 1"
       :expand-on-hover.sync="expandOnHover"
     />
 
