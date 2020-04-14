@@ -51,6 +51,13 @@
               prepend-icon="mdi-lock-outline"
             />
 
+            <div
+              style="color:red; font-size:12px"
+              @if="error_message"
+            >
+              {{ error_message }}
+            </div>
+
             <pages-btn
               large
               color=""
@@ -94,6 +101,7 @@
       ],
       email: '',
       password: '',
+      error_message: '',
     }),
 
     mounted () {
@@ -106,6 +114,9 @@
         this.$store.dispatch('userLogin', { email: this.email, password: this.password })
           .then(response => {
             this.$router.push({ name: 'Admin Dashboard' })
+          })
+          .catch(() => {
+            this.error_message = 'Incorrect combination of email and password.'
           })
       },
     },

@@ -99,9 +99,9 @@ export default new Vuex.Store({
                     resolve(user)
                   })
               })
-              .catch(err => {
-                // console.log(err)
-                reject(err)
+              .catch(error => {
+                // console.log(error)
+                reject(error.data)
               })
           })
       })
@@ -126,9 +126,6 @@ export default new Vuex.Store({
         .get('/companies.json?status=active')
         .then(response => {
           commit('GET_CALLRAIL_COMPANIES', response.data)
-        })
-        .catch(error => {
-          console.log(error)
         })
     },
   },
