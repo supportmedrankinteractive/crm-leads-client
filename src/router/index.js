@@ -12,7 +12,7 @@ export default new Router({
       component: () => import('@/views/pages/Index'),
       children: [
         {
-          name: 'UserLogin',
+          name: 'User Login',
           path: '',
           component: () => import('@/views/pages/Login'),
           meta: {
@@ -36,7 +36,7 @@ export default new Router({
         // Dashboard
         {
           path: 'dashboard',
-          name: 'UserDashboard',
+          name: 'User Dashboard',
           component: () => import('@/views/user/Dashboard'),
           meta: {
             requiresUserAuth: true,
@@ -44,7 +44,7 @@ export default new Router({
         },
         {
           path: 'approval-waiting',
-          name: 'UserApprovalWaiting',
+          name: 'User Approval Waiting',
           component: () => import('@/views/pages/Lock'),
           meta: {
             requiresUserAuth: true,
@@ -61,8 +61,13 @@ export default new Router({
       children: [
         // Dashboard
         {
+          name: 'User Profile',
+          path: 'profile/user/:user',
+          component: () => import('@/views/dashboard/pages/UserProfile'),
+        },
+        {
           path: '',
-          name: 'AdminDashboard',
+          name: 'Admin Dashboard',
           component: () => import('@/views/admin/Dashboard'),
         },
       ],
@@ -72,7 +77,7 @@ export default new Router({
       component: () => import('@/views/pages/Index'),
       children: [
         {
-          name: 'AdminLogin',
+          name: 'Admin Login',
           path: '',
           component: () => import('@/views/admin/Login'),
           meta: {

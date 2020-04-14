@@ -2,9 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-axios.defaults.withCredentials = true
-axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -18,6 +15,10 @@ export default new Vuex.Store({
     user: localStorage.getItem('user') || null,
     admin: localStorage.getItem('admin') || null,
     users: [],
+    callrail: {
+      companies: [],
+    },
+    profile: localStorage.getItem('profile') || {},
   },
   getters: {
     isUser (state) {
@@ -31,6 +32,10 @@ export default new Vuex.Store({
     },
     getUsers (state) {
       return state.users
+    },
+
+    getProfile (state) {
+      return state.profile
     },
   },
   mutations: {
@@ -56,10 +61,23 @@ export default new Vuex.Store({
     GET_USERS (state, payload) {
       state.users = payload.data.data
     },
+    GET_CALLRAIL_COMPANIES (state, payload) {
+      state.callrail.companies = payload.companies
+    },
+    GET_PROFILE (state, payload) {
+      state.profile = payload
+    },
   },
   actions: {
+    getProfile ({ commit }, payload) {
+      localStorage.setItem('profile', JSON.stringify(payload))
+      commit('GET_PROFILE', payload)
+    },
+
     userLogin ({ commit }, payload) {
       return new Promise((resolve, reject) => {
+        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
+        axios.defaults.withCredentials = true
         axios.get('/sanctum/csrf-cookie')
           .then(response => {
             axios.post('/login', {
@@ -88,11 +106,29 @@ export default new Vuex.Store({
           })
       })
     },
+
     getUsers ({ commit }) {
+      axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
+      axios.defaults.withCredentials = true
       axios
         .get('api/users')
         .then(response => {
           commit('GET_USERS', response)
+        })
+    },
+
+    getCallrailCompanies ({ commit }) {
+      axios.defaults.baseURL = process.env.VUE_APP_CALLRAIL_BASE_URL
+      axios.defaults.headers.authorization = `Token token=${process.env.VUE_APP_CALLRAIL_TOKEN}`
+      axios.defaults.withCredentials = false
+
+      axios
+        .get('/companies.json?status=active')
+        .then(response => {
+          commit('GET_CALLRAIL_COMPANIES', response.data)
+        })
+        .catch(error => {
+          console.log(error)
         })
     },
   },

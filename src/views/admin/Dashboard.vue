@@ -36,10 +36,26 @@
         :headers="headers"
         :items="$store.getters.getUsers"
         :search.sync="search"
-        :sort-by="['name', 'office']"
+        :sort-by="['name', 'email']"
         :sort-desc="[false, true]"
         multi-sort
-      />
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editProfile(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteItem(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
     </base-material-card>
   </v-container>
 </template>
@@ -72,8 +88,16 @@
       ],
       search: undefined,
     }),
+
     mounted () {
       this.$store.dispatch('getUsers')
+    },
+
+    methods: {
+      editProfile (user) {
+        this.$store.dispatch('getProfile', user)
+        this.$router.push({ name: 'User Profile', params: { user: user.id } })
+      },
     },
   }
 </script>

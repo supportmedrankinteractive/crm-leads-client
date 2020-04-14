@@ -22,97 +22,44 @@
               <v-row>
                 <v-col
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <v-text-field
-                    label="Company (disabled)"
-                    disabled
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
+                    v-model="profile.name"
                     class="purple-input"
-                    label="User Name"
+                    label="Full Name"
                   />
                 </v-col>
 
                 <v-col
                   cols="12"
-                  md="4"
+                  md="6"
                 >
                   <v-text-field
+                    v-model="profile.email"
                     label="Email Address"
                     class="purple-input"
                   />
                 </v-col>
 
-                <v-col
-                  cols="12"
-                  md="6"
-                >
-                  <v-text-field
-                    label="First Name"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="6"
-                >
-                  <v-text-field
-                    label="Last Name"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col cols="12">
-                  <v-text-field
-                    label="Adress"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    label="City"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    label="Country"
-                    class="purple-input"
-                  />
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-text-field
-                    class="purple-input"
-                    label="Postal Code"
-                    type="number"
-                  />
-                </v-col>
-
                 <v-col cols="12">
                   <v-textarea
+                    v-model="profile.notes"
                     class="purple-input"
-                    label="About Me"
-                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    label="Registration Notes"
+                  />
+                </v-col>
+
+                <v-col
+                  cols="12"
+                  md="4"
+                >
+                  <v-select
+                    label="Companies"
+                    class="purple-input"
+                    item-text="name"
+                    item-value="id"
+                    :items="$store.state.callrail.companies"
                   />
                 </v-col>
 
@@ -170,6 +117,13 @@
 
 <script>
   export default {
-    //
+    data: () => ({
+      profile: {},
+    }),
+
+    async mounted () {
+      this.$store.dispatch('getCallrailCompanies')
+      this.profile = this.$store.state.profile
+    },
   }
 </script>

@@ -10,20 +10,20 @@ export function initialize (store, router) {
 
     if (requiresGuest) {
       if (isUser) {
-        next({ name: 'UserDashboard' })
+        next({ name: 'Use rDashboard' })
       } else {
         next()
       }
     } else if (requiresUserAuth) {
       if (!isUser) {
-        next({ name: 'UserLogin' })
+        next({ name: 'User Login' })
       } else {
         next()
       }
     } else if (requiresAdminAuth && !isAdmin) {
-      next({ name: 'AdminLogin' })
+      next({ name: 'Admin Login' })
     } else if (requiresGuestAdmin && isAdmin) {
-      next({ name: 'AdminDashboard' })
+      next({ name: 'Admin Dashboard' })
     } else {
       next()
     }

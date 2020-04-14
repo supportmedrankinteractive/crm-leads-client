@@ -105,7 +105,7 @@
       login () {
         this.$store.dispatch('userLogin', { email: this.email, password: this.password })
           .then(response => {
-            this.$router.push({ name: 'UserDashboard' })
+            this.$router.push({ name: 'User Dashboard' })
           })
       },
     },
