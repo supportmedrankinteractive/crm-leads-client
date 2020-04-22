@@ -73,9 +73,9 @@ export default new Vuex.Store({
       }
     },
     GET_USERS (state, payload) {
-      payload.data.forEach(user => {
-        return Object.assign(user, state.callrail.companies.find(company => company.id === user.profile.id))
-      })
+      // payload.data.forEach(user => {
+      //   return Object.assign(user, state.callrail.companies.find(company => company.id === user.profile.id))
+      // })
       // console.log(`map ${company}`)
       state.users = payload.data
     },
