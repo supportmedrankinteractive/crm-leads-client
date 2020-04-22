@@ -75,44 +75,63 @@
                     Or Be Classical
                   </div>
 
-                  <v-text-field
-                    color="secondary"
-                    label="First Name..."
-                    prepend-icon="mdi-face"
-                  />
-
-                  <v-text-field
-                    color="secondary"
-                    label="Email..."
-                    prepend-icon="mdi-email"
-                  />
-
-                  <v-text-field
-                    class="mb-8"
-                    color="secondary"
-                    label="Password..."
-                    prepend-icon="mdi-lock-outline"
-                  />
-
-                  <v-checkbox
-                    :input-value="true"
-                    color="secondary"
+                  <v-form
+                    ref="form"
+                    v-model="valid"
+                    lazy-validation
                   >
-                    <template v-slot:label>
-                      <span class="text-no-wrap">I agree to the&nbsp;</span>
+                    <v-text-field
+                      v-model="user.name"
+                      :rules="$store.state.nameRules"
+                      color="secondary"
+                      label="Name..."
+                      prepend-icon="mdi-face"
+                    />
 
-                      <a
-                        class="secondary--text ml-6 ml-sm-0"
-                        href="#"
-                      >
-                        terms and conditions
-                      </a>.
-                    </template>
-                  </v-checkbox>
+                    <v-text-field
+                      v-model="user.email"
+                      :rules="$store.state.emailRules"
+                      color="secondary"
+                      label="Email..."
+                      prepend-icon="mdi-email"
+                    />
 
-                  <pages-btn color="success">
-                    Get Started
-                  </pages-btn>
+                    <v-text-field
+                      v-model="user.password"
+                      :rules="$store.state.passwordRules"
+                      class="mb-8"
+                      color="secondary"
+                      label="Password..."
+                      prepend-icon="mdi-lock-outline"
+                    />
+
+                    <v-textarea
+                      v-model="user.notes"
+                      :rules="$store.state.notesRules"
+                      color="secondary"
+                      label="Registration Notes..."
+                      placeholder="i.e: I am requesting to register for Organic Clicks, LLC"
+                      prepend-icon="mdi-note"
+                    />
+
+                    <v-alert
+                      v-if="success_message"
+                      type="success"
+                      :value="true"
+                      class="mb-3"
+                    >
+                      {{ success_message }}
+                    </v-alert>
+
+                    <v-btn
+                      :disabled="!valid"
+                      color="success"
+                      class="mr-4"
+                      @click="register"
+                    >
+                      Register
+                    </v-btn>
+                  </v-form>
                 </div>
               </v-col>
             </v-row>
@@ -128,11 +147,13 @@
     name: 'PagesRegister',
 
     components: {
-      PagesBtn: () => import('./components/Btn'),
       PagesHeading: () => import('./components/Heading'),
     },
 
     data: () => ({
+      valid: true,
+      user: {},
+      success_message: '',
       sections: [
         {
           icon: 'mdi-chart-timeline-variant',
@@ -172,6 +193,15 @@
 
       ],
     }),
+    methods: {
+      register () {
+        this.$refs.form.validate()
+        this.$store.dispatch('userRegister', this.user)
+          .then(() => {
+            this.success_message = 'Registration request submitted. Please wait while admin is verifying your request. '
+          })
+      },
+    },
   }
 </script>
 

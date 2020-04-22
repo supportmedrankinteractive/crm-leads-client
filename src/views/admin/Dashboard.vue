@@ -75,8 +75,12 @@
           value: 'email',
         },
         {
+          text: 'Company',
+          value: 'company_name',
+        },
+        {
           text: 'Approved',
-          value: 'is_approvedd',
+          value: 'is_approved',
         },
         {
           sortable: false,
@@ -90,6 +94,7 @@
     }),
 
     mounted () {
+      this.$store.dispatch('getCallrailCompanies')
       this.$store.dispatch('getUsers')
     },
 

@@ -17,7 +17,11 @@
             </div>
           </template>
 
-          <v-form>
+          <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+          >
             <v-container class="py-0">
               <v-row>
                 <v-col
@@ -26,6 +30,7 @@
                 >
                   <v-text-field
                     v-model="profile.name"
+                    :rules="$store.state.nameRules"
                     class="purple-input"
                     label="Full Name"
                   />
@@ -37,6 +42,7 @@
                 >
                   <v-text-field
                     v-model="profile.email"
+                    :rules="$store.state.emailRules"
                     label="Email Address"
                     class="purple-input"
                   />
@@ -47,6 +53,7 @@
                     v-model="profile.notes"
                     class="purple-input"
                     label="Registration Notes"
+                    readonly
                   />
                 </v-col>
 
@@ -55,6 +62,8 @@
                   md="4"
                 >
                   <v-select
+                    v-model="profile.company"
+                    :rules="[v => !!v || 'You must choose to continue!']"
                     label="Companies"
                     class="purple-input"
                     item-text="name"
@@ -65,11 +74,27 @@
 
                 <v-col
                   cols="12"
+                  md="12"
+                >
+                  <v-alert
+                    v-if="success_message"
+                    type="success"
+                    :value="true"
+                    class="mb-3"
+                  >
+                    {{ success_message }}
+                  </v-alert>
+                </v-col>
+
+                <v-col
+                  cols="12"
                   class="text-right"
                 >
                   <v-btn
+                    :disabled="!valid"
                     color="success"
                     class="mr-0"
+                    @click="updateProfile"
                   >
                     Update Profile
                   </v-btn>
@@ -119,11 +144,23 @@
   export default {
     data: () => ({
       profile: {},
+      valid: true,
+      success_message: '',
     }),
 
     async mounted () {
-      this.$store.dispatch('getCallrailCompanies')
+      // this.$store.dispatch('getCallrailCompanies')
       this.profile = this.$store.state.profile
+    },
+
+    methods: {
+      updateProfile () {
+        this.$refs.form.validate()
+        this.$store.dispatch('updateProfile', this.profile)
+          .then(() => {
+            this.success_message = 'You have successfully approved the user.'
+          })
+      },
     },
   }
 </script>

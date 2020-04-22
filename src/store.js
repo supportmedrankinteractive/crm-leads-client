@@ -16,9 +16,23 @@ export default new Vuex.Store({
     admin: localStorage.getItem('admin') || null,
     users: [],
     callrail: {
-      companies: [],
+      companies: localStorage.getItem('companies') || [],
     },
     profile: localStorage.getItem('profile') || {},
+    registration_errors: {},
+    nameRules: [
+      v => !!v || 'Name is required',
+    ],
+    passwordRules: [
+      v => !!v || 'Password is required',
+    ],
+    notesRules: [
+      v => !!v || 'Notes is required for us to see the details of your request.',
+    ],
+    emailRules: [
+      v => !!v || 'E-mail is required',
+      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+    ],
   },
   getters: {
     isUser (state) {
@@ -59,7 +73,11 @@ export default new Vuex.Store({
       }
     },
     GET_USERS (state, payload) {
-      state.users = payload.data.data
+      const company = payload.data.forEach(user => {
+        return Object.assign(user, state.callrail.companies.find(company => company.id === user.profile.id))
+      })
+      // console.log(`map ${company}`)
+      state.users = payload.data
     },
     GET_CALLRAIL_COMPANIES (state, payload) {
       state.callrail.companies = payload.companies
@@ -67,11 +85,39 @@ export default new Vuex.Store({
     GET_PROFILE (state, payload) {
       state.profile = payload
     },
+    GET_ERROR_REGISTRATION (state, payload) {
+      state.registration_errors = payload
+    },
   },
   actions: {
     getProfile ({ commit }, payload) {
       localStorage.setItem('profile', JSON.stringify(payload))
       commit('GET_PROFILE', payload)
+    },
+
+    updateProfile ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
+        axios.defaults.withCredentials = true
+        axios.get('/sanctum/csrf-cookie')
+          .then(() => {
+            axios.put(`/api/users/${payload.id}`, {
+              name: payload.name,
+              email: payload.email,
+              password: payload.password,
+              notes: payload.notes,
+              company: payload.company,
+              id: payload.id,
+            })
+            .then(user => {
+              // console.log(user.data)
+              resolve(user)
+            })
+            .catch(error => {
+              reject(error.errors)
+            })
+        })
+      })
     },
 
     userLogin ({ commit }, payload) {
@@ -100,10 +146,34 @@ export default new Vuex.Store({
                   })
               })
               .catch(error => {
-                // console.log(error)
                 reject(error.data)
               })
           })
+      })
+    },
+
+    userRegister ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
+        axios.defaults.withCredentials = true
+        axios.get('/sanctum/csrf-cookie')
+          .then(() => {
+            axios.post('/api/users', {
+              name: payload.name,
+              email: payload.email,
+              password: payload.password,
+              notes: payload.notes,
+            })
+            .then(user => {
+              // console.log(user.data)
+              resolve(user)
+            })
+            .catch(error => {
+              // console.log(error)
+              commit('GET_ERROR_REGISTRATION', error.response.data)
+              reject(error.errors)
+            })
+        })
       })
     },
 
@@ -125,6 +195,7 @@ export default new Vuex.Store({
       axios
         .get('/companies.json?status=active')
         .then(response => {
+          localStorage.setItem('companies', JSON.stringify(response.data))
           commit('GET_CALLRAIL_COMPANIES', response.data)
         })
     },
