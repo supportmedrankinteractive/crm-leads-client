@@ -4,7 +4,7 @@
     tag="section"
   >
     <div
-      v-if="$store.state.user.is_approved === 1"
+      v-if="$store.state.isUserApproved"
     >
       <base-v-component
         heading="Data Tables"
@@ -37,7 +37,7 @@
 
         <v-data-table
           :headers="headers"
-          :items="items"
+          :items="$store.state.callrail_calls.calls"
           :search.sync="search"
           :sort-by="['name', 'office']"
           :sort-desc="[false, true]"
@@ -97,28 +97,28 @@
       headers: [
         {
           text: 'Name',
-          value: 'name',
+          value: 'customer_name',
         },
         {
-          text: 'Position',
-          value: 'position',
+          text: 'Customer Phone',
+          value: 'customer_phone_number',
         },
         {
-          text: 'Office',
-          value: 'office',
+          text: 'Business Phone',
+          value: 'business_phone_number',
         },
         {
-          text: 'Age',
-          value: 'age',
+          text: 'City',
+          value: 'customer_city',
         },
         {
-          text: 'Date',
-          value: 'date',
+          text: 'State',
+          value: 'customer_state',
         },
         {
           sortable: false,
-          text: 'Actions',
-          value: 'actions',
+          text: 'Country',
+          value: 'customer_country',
         },
       ],
       items: [
@@ -158,11 +158,20 @@
           date: '2011/06/07',
         },
       ],
+      callrails: [],
       search: undefined,
     }),
     mounted () {
-      // console.log(JSON.parse(this.$store.state.user).is_approved)
-      // console.log(this.$store.state.user)
+      console.log(this.$store.state.user)
+      // axios
+      //   .get(`/profile`)
+      //   .then(response => console.log(response.data))
+      this.$store.dispatch('getProfileCallrail')
+      // axios
+      //   .get(`https://api.callrail.com/v3/a/ACCdd593e22d15c4854ad76da1c3395760b/calls.json?company_id=${this.$store.state.user.profile.callrail}`)
+      //   .then(response => {
+      //     this.callrails = response.data
+      //   })
     },
   }
 </script>

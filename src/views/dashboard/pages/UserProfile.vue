@@ -69,6 +69,7 @@
                     item-text="name"
                     item-value="id"
                     :items="$store.state.callrail.companies"
+                    return-object
                   />
                 </v-col>
 
@@ -156,9 +157,11 @@
     methods: {
       updateProfile () {
         this.$refs.form.validate()
+        // console.log(this.profile.company.name)
         this.$store.dispatch('updateProfile', this.profile)
           .then(() => {
-            this.success_message = 'You have successfully approved the user.'
+            this.success_message = `You have successfully approved the user and assigned to ${this.profile.company.name}`
+            console.log(this.profile.company)
           })
       },
     },

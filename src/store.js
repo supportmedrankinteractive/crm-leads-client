@@ -14,11 +14,12 @@ export default new Vuex.Store({
     isAdmin: localStorage.getItem('isAdmin') || false,
     user: localStorage.getItem('user') || null,
     admin: localStorage.getItem('admin') || null,
+    callrail_calls: localStorage.getItem('callrail_calls') || [],
     users: [],
     callrail: {
       companies: localStorage.getItem('companies') || [],
     },
-    profile: localStorage.getItem('profile') || {},
+    // profile: localStorage.getItem('profile') || {},
     registration_errors: {},
     nameRules: [
       v => !!v || 'Name is required',
@@ -68,15 +69,12 @@ export default new Vuex.Store({
         state.isAdmin = true
       } else {
         state.user = payload.data
+        // state.profile = payload.data.profile
         state.isUser = true
         state.isUserApproved = payload.data.is_approved
       }
     },
     GET_USERS (state, payload) {
-      // payload.data.forEach(user => {
-      //   return Object.assign(user, state.callrail.companies.find(company => company.id === user.profile.id))
-      // })
-      // console.log(`map ${company}`)
       state.users = payload.data
     },
     GET_CALLRAIL_COMPANIES (state, payload) {
@@ -87,6 +85,9 @@ export default new Vuex.Store({
     },
     GET_ERROR_REGISTRATION (state, payload) {
       state.registration_errors = payload
+    },
+    GET_CALLRAIL_CALLS (state, payload) {
+      state.callrail_calls = payload
     },
   },
   actions: {
@@ -140,6 +141,7 @@ export default new Vuex.Store({
                       localStorage.setItem('isUser', true)
                       localStorage.setItem('isUserApproved', user.data.is_approved)
                       localStorage.setItem('user', JSON.stringify(user.data))
+                      // localStorage.setItem('profile', JSON.stringify(user.data.profile))
                     }
                     commit('USER_LOGIN', user)
                     resolve(user)
@@ -197,6 +199,19 @@ export default new Vuex.Store({
         .then(response => {
           localStorage.setItem('companies', JSON.stringify(response.data))
           commit('GET_CALLRAIL_COMPANIES', response.data)
+        })
+    },
+
+    getProfileCallrail (context) {
+      axios.defaults.baseURL = process.env.VUE_APP_CALLRAIL_BASE_URL
+      axios.defaults.headers.authorization = `Token token=${process.env.VUE_APP_CALLRAIL_TOKEN}`
+      axios.defaults.withCredentials = false
+
+      axios
+        .get(`/calls.json?company_id=${context.state.user.profile.callrail}`)
+        .then(response => {
+          localStorage.setItem('callrail_calls', JSON.stringify(response.data))
+          context.commit('GET_CALLRAIL_CALLS', response.data)
         })
     },
   },

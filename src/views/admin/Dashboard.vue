@@ -34,7 +34,7 @@
 
       <v-data-table
         :headers="headers"
-        :items="$store.getters.getUsers"
+        :items="$store.state.users"
         :search.sync="search"
         :sort-by="['name', 'email']"
         :sort-desc="[false, true]"
@@ -76,7 +76,7 @@
         },
         {
           text: 'Company',
-          value: 'company_name',
+          value: 'profile.company_name',
         },
         {
           text: 'Approved',
@@ -91,11 +91,31 @@
       items: [
       ],
       search: undefined,
+      userWithCompany: [],
     }),
 
-    mounted () {
+    async mounted () {
       this.$store.dispatch('getCallrailCompanies')
       this.$store.dispatch('getUsers')
+
+      // const userWithCompany = []
+      // this.$store.state.users.forEach(user => {
+      //   // return Object.assign(user, state.callrail.companies.find(company => company.id === user.profile.id))
+      //   this.$store.state.callrail.companies.forEach(company => {
+      //     // if (company.id === user.profile.id) {
+      //     //   userWithCompany.push(Object.assign(user, { company: company.name }))
+      //     // }
+      //     // if (user.profile && company.id === user.profile.id) {
+      //     //   this.userWithCompany.push(Object.assign(user, { company: company.name }))
+      //     // } else {
+      //     //   this.userWithCompany.push(user)
+      //     // }
+      //     this.userWithCompany.push(JSON.stringify(company).name)
+      //   })
+      //   // this.userWithCompany.push(user)
+      // })
+      this.userWithCompany = await this.$store.state.users
+      console.log(`map ${this.userWithCompany}`)
     },
 
     methods: {
