@@ -115,7 +115,6 @@
       //   // this.userWithCompany.push(user)
       // })
       this.userWithCompany = await this.$store.state.users
-      console.log(`map ${this.userWithCompany}`)
     },
 
     methods: {

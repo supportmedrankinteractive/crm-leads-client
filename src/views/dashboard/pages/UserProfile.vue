@@ -161,7 +161,6 @@
         this.$store.dispatch('updateProfile', this.profile)
           .then(() => {
             this.success_message = `You have successfully approved the user and assigned to ${this.profile.company.name}`
-            console.log(this.profile.company)
           })
       },
     },

@@ -162,7 +162,6 @@
       search: undefined,
     }),
     mounted () {
-      console.log(this.$store.state.user)
       // axios
       //   .get(`/profile`)
       //   .then(response => console.log(response.data))
