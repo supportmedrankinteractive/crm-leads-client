@@ -12,8 +12,8 @@ export default new Vuex.Store({
     isUser: JSON.parse(localStorage.getItem('isUser')) || false,
     isUserApproved: localStorage.getItem('isUserApproved') || false,
     isAdmin: localStorage.getItem('isAdmin') || false,
-    user: localStorage.getItem('user') || null,
-    admin: localStorage.getItem('admin') || null,
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    admin: JSON.parse(localStorage.getItem('admin')) || null,
     callrail_calls: localStorage.getItem('callrail_calls') || [],
     users: [],
     callrail: {

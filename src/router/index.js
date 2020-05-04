@@ -8,6 +8,18 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      path: '/',
+      component: () => import('@/views/dashboard/Index'),
+      children: [
+        // Dashboard
+        {
+          name: 'Dashboard',
+          path: 'dashboard',
+          component: () => import('@/views/dashboard/Dashboard'),
+        },
+      ],
+    },
+    {
       path: '/user-guest',
       component: () => import('@/views/pages/Index'),
       children: [
@@ -38,6 +50,30 @@ export default new Router({
           path: 'dashboard',
           name: 'User Dashboard',
           component: () => import('@/views/user/Dashboard'),
+          meta: {
+            requiresUserAuth: true,
+          },
+        },
+        {
+          path: 'callrail-calls',
+          name: 'CallRail Calls',
+          component: () => import('@/views/user/CallRailCalls'),
+          meta: {
+            requiresUserAuth: true,
+          },
+        },
+        {
+          path: 'callrail-forms',
+          name: 'CallRail Forms',
+          component: () => import('@/views/user/CallRailForms'),
+          meta: {
+            requiresUserAuth: true,
+          },
+        },
+        {
+          path: 'facebook-analytics',
+          name: 'Facebook Analytics',
+          component: () => import('@/views/user/FacebookAnalytics'),
           meta: {
             requiresUserAuth: true,
           },

@@ -22,8 +22,8 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">{{ $t('ct') }}</span>
-          <span class="logo-normal">{{ $t('tim') }}</span>
+          <span class="logo-mini">CRM</span>
+          <span class="logo-normal">Medrank</span>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -47,17 +47,27 @@
       <!-- https://github.com/vuetifyjs/vuetify/pull/8574 -->
       <div />
 
-      <template v-for="(item, i) in computedItems">
-        <base-item-group
+      <template v-for="(item, i) in items">
+        <!-- <base-item-group
           v-if="item.children"
           :key="`group-${i}`"
           :item="item"
         >
-          <!--  -->
         </base-item-group>
 
         <base-item
           v-else
+          :key="`item-${i}`"
+          :item="item"
+        /> -->
+        <base-item
+          v-if="$store.state.isAdmin && item.role == 'admin'"
+          :key="`item-${i}`"
+          :item="item"
+        />
+
+        <base-item
+          v-else-if="$store.state.isUser && item.role == 'user'"
           :key="`item-${i}`"
           :item="item"
         />
@@ -90,8 +100,33 @@
       items: [
         {
           icon: 'mdi-view-dashboard',
-          title: 'dashboard',
-          to: '/',
+          title: 'Admin Dashboard',
+          role: 'admin',
+          to: '/admin',
+        },
+        {
+          icon: 'mdi-view-dashboard',
+          title: 'Dashboard',
+          role: 'user',
+          to: '/user/dashboard',
+        },
+        {
+          icon: 'mdi-facebook',
+          title: 'Facebook',
+          role: 'user',
+          to: '/user/facebook-analytics',
+        },
+        {
+          icon: 'mdi-google-analytics',
+          title: 'Callrail Calls',
+          role: 'user',
+          to: '/user/callrail-calls',
+        },
+        {
+          icon: 'mdi-file-outline',
+          title: 'Callrail Forms',
+          role: 'user',
+          to: '/user/callrail-forms',
         },
         {
           group: '/pages',
@@ -263,9 +298,9 @@
       },
       profile () {
         return {
-          avatar: true,
+          avatar: false,
           group: '',
-          title: this.$t('avatar'),
+          title: this.$store.state.user ? this.$store.state.user.name : this.$store.state.admin.name,
           children: [
             {
               href: '',

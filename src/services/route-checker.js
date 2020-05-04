@@ -10,7 +10,7 @@ export function initialize (store, router) {
 
     if (requiresGuest) {
       if (isUser) {
-        next({ name: 'Use rDashboard' })
+        next({ name: 'UserDashboard' })
       } else {
         next()
       }
