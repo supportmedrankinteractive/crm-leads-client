@@ -14,7 +14,7 @@ export default new Vuex.Store({
     isAdmin: localStorage.getItem('isAdmin') || false,
     user: JSON.parse(localStorage.getItem('user')) || null,
     admin: JSON.parse(localStorage.getItem('admin')) || null,
-    callrail_calls: localStorage.getItem('callrail_calls') || [],
+    callrail_calls: JSON.parse(localStorage.getItem('callrail_calls')) || {},
     users: [],
     callrail: {
       companies: localStorage.getItem('companies') || [],
@@ -203,15 +203,21 @@ export default new Vuex.Store({
     },
 
     getProfileCallrail (context) {
-      axios.defaults.baseURL = process.env.VUE_APP_CALLRAIL_BASE_URL
-      axios.defaults.headers.authorization = `Token token=${process.env.VUE_APP_CALLRAIL_TOKEN}`
-      axios.defaults.withCredentials = false
+      return new Promise((resolve, reject) => {
+        axios.defaults.baseURL = process.env.VUE_APP_CALLRAIL_BASE_URL
+        axios.defaults.headers.authorization = `Token token=${process.env.VUE_APP_CALLRAIL_TOKEN}`
+        axios.defaults.withCredentials = false
 
-      axios
-        .get(`/calls.json?company_id=${context.state.user.profile.callrail}`)
-        .then(response => {
-          localStorage.setItem('callrail_calls', JSON.stringify(response.data))
-          context.commit('GET_CALLRAIL_CALLS', response.data)
+        axios
+          .get(`/calls.json?company_id=${context.state.user.profile.callrail}&per_page=250`)
+          .then(response => {
+            localStorage.setItem('callrail_calls', JSON.stringify(response.data))
+            context.commit('GET_CALLRAIL_CALLS', response.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error.errors)
+          })
         })
     },
   },

@@ -8,7 +8,7 @@
       <v-col cols="12">
         <base-material-card
           icon="mdi-earth"
-          title="Global Sales by Top Locations"
+          title="Visits Data by Top Cities"
         >
           <v-row>
             <v-col
@@ -21,18 +21,18 @@
               >
                 <tbody>
                   <tr
-                    v-for="(sale, i) in sales"
+                    v-for="(city, i) in cities"
                     :key="i"
                   >
                     <td>
-                      <v-img
+                      <!-- <v-img
                         :src="sale.flag"
                         width="18"
-                      />
+                      /> -->
                     </td>
-                    <td v-text="sale.country" />
-                    <td v-text="sale.salesInM" />
-                    <td v-text="((sale.salesInM / totalSales) * 100).toFixed(2) + '%'" />
+                    <td v-text="cities[i][0]" />
+                    <td v-text="cities[i][1]" />
+                    <td v-text="((cities[i][1] / totalCalls) * 100).toFixed(2) + '%'" />
                   </tr>
                 </tbody>
               </v-simple-table>
@@ -620,7 +620,7 @@
 
 <script>
   export default {
-    name: 'DashboardDashboard',
+    name: 'UserDashboard',
 
     data () {
       return {
@@ -811,18 +811,35 @@
           1: false,
           2: false,
         },
+        cities: [],
       }
     },
-
     computed: {
-      totalSales () {
-        return this.sales.reduce((acc, val) => acc + val.salesInM, 0)
+      totalCalls () {
+        return this.cities.reduce((acc, val) => acc + val[1], 0)
       },
     },
+    async mounted () {
+      if (typeof (this.$store.state.callrail_calls.calls) === 'undefined') {
+        await this.$store.dispatch('getProfileCallrail')
+      }
 
+      const groupByCity = this.$store.state.callrail_calls.calls.reduce((acc, it) => {
+        acc[it.customer_city] = acc[it.customer_city] + 1 || 1
+        return acc
+      }, {})
+
+      Object.entries(groupByCity).forEach(city => {
+        this.cities.push(city)
+      })
+      // console.log('cities', this.totalCalls)
+    },
     methods: {
       complete (index) {
         this.list[index] = !this.list[index]
+      },
+      groupBy (gby) {
+        return gby
       },
     },
   }

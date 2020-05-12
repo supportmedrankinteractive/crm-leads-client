@@ -39,6 +39,9 @@
           :headers="headers"
           :items="$store.state.callrail_calls.calls"
           :search.sync="search"
+          :items-per-page="250"
+          :options="pagination_options"
+          :page-count="page_count"
           :sort-by="['name', 'office']"
           :sort-desc="[false, true]"
           multi-sort
@@ -121,56 +124,23 @@
           value: 'customer_country',
         },
       ],
-      items: [
-        {
-          name: 'Airi Satou',
-          position: 'Accountant',
-          office: 'Tokyo',
-          age: 33,
-          date: '2008/11/28',
-        },
-        {
-          name: 'Angelica Ramos',
-          position: 'Chief Executive Officer (CEO)',
-          office: 'London',
-          age: 47,
-          date: '2009/10/09',
-        },
-        {
-          name: 'Ashton Cox',
-          position: 'Junior Technical Author',
-          office: 'San Francisco',
-          age: 66,
-          date: '2009/01/12',
-        },
-        {
-          name: 'Bradley Greer',
-          position: 'Software Engineer',
-          office: 'London',
-          age: 41,
-          date: '2012/10/13',
-        },
-        {
-          name: 'Brenden Wagner',
-          position: 'Software Engineer',
-          office: 'San Francisco',
-          age: 28,
-          date: '2011/06/07',
-        },
-      ],
       callrails: [],
+      pagination_options: {},
       search: undefined,
+      page_count: '',
     }),
     mounted () {
-      // axios
-      //   .get(`/profile`)
-      //   .then(response => console.log(response.data))
-      this.$store.dispatch('getProfileCallrail')
-      // axios
-      //   .get(`https://api.callrail.com/v3/a/ACCdd593e22d15c4854ad76da1c3395760b/calls.json?company_id=${this.$store.state.user.profile.callrail}`)
-      //   .then(response => {
-      //     this.callrails = response.data
-      //   })
+      // this.$store.dispatch('getProfileCallrail')
+      this.page_count = this.$store.state.callrail_calls.total_records
+      // alert(this.page_count)
+      this.pagination_options = {
+        page: this.$store.state.callrail_calls.page,
+        itemsPerPage: this.$store.state.callrail_calls.per_page,
+        pageStart: 1,
+        pageStop: this.$store.state.callrail_calls.total_records / this.$store.state.callrail_calls.per_page,
+        pageCount: this.$store.state.callrail_calls.total_pages,
+        itemsLength: this.$store.state.callrail_calls.total_records,
+      }
     },
   }
 </script>
