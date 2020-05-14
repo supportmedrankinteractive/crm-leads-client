@@ -140,9 +140,11 @@
           <app-bar-item
             v-else
             :key="`item-${i}`"
-            to="/"
           >
-            <v-list-item-title v-text="p.title" />
+            <v-list-item-title
+              @click="goTo(p)"
+              v-text="p.title"
+            />
           </app-bar-item>
         </template>
       </v-list>
@@ -151,6 +153,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   // Components
   import { VHover, VListItem } from 'vuetify/lib'
 
@@ -202,10 +205,10 @@
         'Another one',
       ],
       profile: [
-        { title: 'Profile' },
-        { title: 'Settings' },
+        { title: 'Profile', url: '' },
+        { title: 'Settings', url: '' },
         { divider: true },
-        { title: 'Log out' },
+        { title: 'Log outss', url: 'logout' },
       ],
     }),
 
@@ -217,6 +220,19 @@
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
       }),
+      goTo (data) {
+        if (data.url === 'logout') {
+          // this.$store.dispatch('userLogout').then(() => this.$router.push({ name: 'User Login' }))
+          axios.defaults.baseURL = 'http://crm-leads.test'
+          axios.post('/logout')
+            .then(() => {
+              this.$store.commit('USER_LOGOUT')
+              this.$router.push({ name: 'User Login' })
+            })
+        } else {
+          this.$router.push()
+        }
+      },
     },
   }
 </script>

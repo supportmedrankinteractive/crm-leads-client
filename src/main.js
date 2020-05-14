@@ -28,6 +28,21 @@ axios.defaults.withCredentials = true
 
 Vue.config.productionTip = false
 
+// Vue.mixin({
+//   created: function () {
+//     axios.interceptors.response.use(undefined, function (err) {
+//       return new Promise(function (resolve, reject) {
+//         if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+//         // if you ever get an unauthorized, logout the user
+//           this.$store.dispatch('userLogout')
+//         // you can also redirect to /login if needed !
+//         }
+//         throw err
+//       })
+//     })
+//   },
+// })
+
 initialize(store, router)
 
 new Vue({

@@ -74,6 +74,13 @@ export default new Vuex.Store({
         state.isUserApproved = payload.data.is_approved
       }
     },
+    USER_LOGOUT (state) {
+      state.admin = null
+      state.isAdmin = false
+      state.user = null
+      state.isUser = false
+      state.isUserApproved = null
+    },
     GET_USERS (state, payload) {
       state.users = payload.data
     },
@@ -150,6 +157,32 @@ export default new Vuex.Store({
               .catch(error => {
                 reject(error.data)
               })
+          })
+      })
+    },
+
+    userLogout ({ commit }) {
+      return new Promise((resolve, reject) => {
+        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
+        axios.defaults.withCredentials = true
+        axios.get('/sanctum/csrf-cookie')
+          .then(resp => {
+            axios.post('/api/logout')
+              .then(user => {
+                if (user.data.is_admin) {
+                  localStorage.removeItem('isAdmin')
+                  localStorage.removeItem('admin')
+                } else {
+                  localStorage.removeItem('isUser')
+                  localStorage.removeItem('isUserApproved')
+                  localStorage.removeItem('user')
+                }
+                commit('USER_LOGOUT', user)
+                resolve()
+              })
+          })
+          .catch(error => {
+            reject(error.data)
           })
       })
     },

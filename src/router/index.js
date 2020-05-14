@@ -7,18 +7,18 @@ export default new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
-    {
-      path: '/',
-      component: () => import('@/views/dashboard/Index'),
-      children: [
-        // Dashboard
-        {
-          name: 'Dashboard',
-          path: 'dashboard',
-          component: () => import('@/views/dashboard/Dashboard'),
-        },
-      ],
-    },
+    // {
+    //   path: '/',
+    //   component: () => import('@/views/dashboard/Index'),
+    //   children: [
+    //     // Dashboard
+    //     {
+    //       name: 'Dashboard',
+    //       path: 'dashboard',
+    //       component: () => import('@/views/dashboard/Dashboard'),
+    //     },
+    //   ],
+    // },
     {
       path: '/user-guest',
       component: () => import('@/views/pages/Index'),

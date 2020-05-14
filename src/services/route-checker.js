@@ -8,11 +8,15 @@ export function initialize (store, router) {
     const isUser = store.getters.isUser
     // const isUserApproved = store.getters.isUserApproved
 
-    if (requiresGuest) {
+    if (requiresGuest || to.path === '/') {
       if (isUser) {
-        next({ name: 'UserDashboard' })
+        next({ name: 'User Dashboard' })
       } else {
-        next()
+        if (to.path === '/') {
+          next({ name: 'User Login' })
+        } else {
+          next()
+        }
       }
     } else if (requiresUserAuth) {
       if (!isUser) {
@@ -27,19 +31,5 @@ export function initialize (store, router) {
     } else {
       next()
     }
-
-    // if (requiresUserAuth && !isUser) {
-    //   next({ name: 'UserLogin' })
-    // } else if (requiresGuest && isUser && !isUserApproved) {
-    //   next({ name: 'UserApprovalWaiting' })
-    // } else if (requiresUserAuth && isUser && isUserApproved) {
-    //   next({ name: 'UserDashboard' })
-    // } else if (requiresAdminAuth && !isAdmin) {
-    //   next({ name: 'AdminLogin' })
-    // } else if (requiresGuestAdmin && isAdmin) {
-    //   next({ name: 'AdminDashboard' })
-    // } else {
-    //   next()
-    // }
   })
 }
