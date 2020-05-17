@@ -78,6 +78,7 @@ export default new Vuex.Store({
       state.admin = null
       state.isAdmin = false
       state.user = null
+      state.callrail_calls = {}
       state.isUser = false
       state.isUserApproved = null
     },
@@ -167,17 +168,16 @@ export default new Vuex.Store({
         axios.defaults.withCredentials = true
         axios.get('/sanctum/csrf-cookie')
           .then(resp => {
-            axios.post('/api/logout')
-              .then(user => {
-                if (user.data.is_admin) {
-                  localStorage.removeItem('isAdmin')
-                  localStorage.removeItem('admin')
-                } else {
-                  localStorage.removeItem('isUser')
-                  localStorage.removeItem('isUserApproved')
-                  localStorage.removeItem('user')
-                }
-                commit('USER_LOGOUT', user)
+            axios.post('/logout')
+              .then(() => {
+                localStorage.removeItem('isAdmin')
+                localStorage.removeItem('admin')
+                localStorage.removeItem('isUser')
+                localStorage.removeItem('isUserApproved')
+                localStorage.removeItem('user')
+                localStorage.removeItem('callrail_calls')
+                localStorage.removeItem('companies')
+                commit('USER_LOGOUT')
                 resolve()
               })
           })
@@ -242,7 +242,7 @@ export default new Vuex.Store({
         axios.defaults.withCredentials = false
 
         axios
-          .get(`/calls.json?company_id=${context.state.user.profile.callrail}&per_page=250`)
+          .get(`/calls.json?fields=source_name,company_name&company_id=${context.state.user.profile.callrail}&per_page=250`)
           .then(response => {
             localStorage.setItem('callrail_calls', JSON.stringify(response.data))
             context.commit('GET_CALLRAIL_CALLS', response.data)

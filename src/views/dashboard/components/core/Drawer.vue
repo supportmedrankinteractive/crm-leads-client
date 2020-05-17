@@ -22,8 +22,8 @@
     <v-list-item two-line>
       <v-list-item-content>
         <v-list-item-title class="text-uppercase font-weight-regular display-2">
-          <span class="logo-mini">CRM</span>
-          <span class="logo-normal">Medrank</span>
+          <span class="logo-mini">Med Rank CRM</span>
+          <span class="logo-normal" />
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -118,13 +118,13 @@
         },
         {
           icon: 'mdi-google-analytics',
-          title: 'Callrail Calls',
+          title: 'CallRail Calls',
           role: 'user',
           to: '/user/callrail-calls',
         },
         {
           icon: 'mdi-file-outline',
-          title: 'Callrail Forms',
+          title: 'Website Forms',
           role: 'user',
           to: '/user/callrail-forms',
         },

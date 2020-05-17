@@ -45,7 +45,14 @@
           :sort-by="['name', 'office']"
           :sort-desc="[false, true]"
           multi-sort
-        />
+        >
+          <template v-slot:item.start_time="{ item }">
+            {{ formatDate(item.start_time) }}
+          </template>
+          <template v-slot:item.duration="{ item }">
+            {{ formatDuration(item.duration) }}
+          </template>
+        </v-data-table>
       </base-material-card>
     </div>
     <div
@@ -91,6 +98,9 @@
 </template>
 
 <script>
+  import moment from 'moment'
+  // Vue.prototype.moment = moment
+
   export default {
     name: 'CallRailCalls',
     components: {
@@ -103,8 +113,16 @@
           value: 'customer_name',
         },
         {
-          text: 'Customer Phone',
-          value: 'customer_phone_number',
+          text: 'Source',
+          value: 'source_name',
+        },
+        {
+          text: 'Start Time',
+          value: 'start_time',
+        },
+        {
+          text: 'Duration',
+          value: 'duration',
         },
         {
           text: 'Business Phone',
@@ -117,11 +135,6 @@
         {
           text: 'State',
           value: 'customer_state',
-        },
-        {
-          sortable: false,
-          text: 'Country',
-          value: 'customer_country',
         },
       ],
       callrails: [],
@@ -141,6 +154,14 @@
         pageCount: this.$store.state.callrail_calls.total_pages,
         itemsLength: this.$store.state.callrail_calls.total_records,
       }
+    },
+    methods: {
+      formatDate (value) {
+        return moment(value).format('MMM DD h:mm:ss a')
+      },
+      formatDuration (secs) {
+        return moment.utc(secs * 1000).format('mm.ss') + 's'
+      },
     },
   }
 </script>
