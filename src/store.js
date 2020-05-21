@@ -242,7 +242,7 @@ export default new Vuex.Store({
         axios.defaults.withCredentials = false
 
         axios
-          .get(`/calls.json?fields=source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location&company_id=${context.state.user.profile.callrail}&per_page=250`)
+          .get(`/calls.json?fields=source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location,formatted_business_phone_number&company_id=${context.state.user.profile.callrail}&per_page=250`)
           .then(response => {
             localStorage.setItem('callrail_calls', JSON.stringify(response.data))
             context.commit('GET_CALLRAIL_CALLS', response.data)

@@ -146,8 +146,8 @@
           value: 'duration',
         },
         {
-          text: 'Business Phone',
-          value: 'business_phone_number',
+          text: 'Agent',
+          value: 'formatted_business_phone_number',
         },
         {
           text: 'Location',
