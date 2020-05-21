@@ -19,7 +19,7 @@
       >
         <template v-slot:after-heading>
           <div class="display-2 font-weight-light">
-            DataTables
+            CallRail
           </div>
         </template>
 
@@ -45,12 +45,29 @@
           :sort-by="['name', 'office']"
           :sort-desc="[false, true]"
           multi-sort
+          class="caption"
         >
+          <template v-slot:item.source_name="{ item }">
+            <div>
+              {{ item.source_name }}
+            </div>
+            <div class="blue--text">
+              {{ item.formatted_tracking_phone_number }}
+            </div>
+          </template>
           <template v-slot:item.start_time="{ item }">
             {{ formatDate(item.start_time) }}
           </template>
           <template v-slot:item.duration="{ item }">
             {{ formatDuration(item.duration) }}
+          </template>
+          <template v-slot:item.customer_name="{ item }">
+            <div>
+              {{ item.customer_name }}
+            </div>
+            <div class="blue--text">
+              {{ item.formatted_customer_phone_number }}
+            </div>
           </template>
         </v-data-table>
       </base-material-card>
@@ -109,16 +126,20 @@
     data: () => ({
       headers: [
         {
-          text: 'Name',
-          value: 'customer_name',
+          text: 'Tracking Number',
+          value: 'source_name',
         },
         {
           text: 'Source',
-          value: 'source_name',
+          value: 'formatted_tracking_source',
         },
         {
           text: 'Start Time',
           value: 'start_time',
+        },
+        {
+          text: 'Contact',
+          value: 'customer_name',
         },
         {
           text: 'Duration',
@@ -129,12 +150,8 @@
           value: 'business_phone_number',
         },
         {
-          text: 'City',
-          value: 'customer_city',
-        },
-        {
-          text: 'State',
-          value: 'customer_state',
+          text: 'Location',
+          value: 'formatted_customer_location',
         },
       ],
       callrails: [],

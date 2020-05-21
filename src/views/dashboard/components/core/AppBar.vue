@@ -223,12 +223,6 @@
       goTo (data) {
         if (data.url === 'logout') {
           this.$store.dispatch('userLogout').then(() => this.$router.push({ name: 'User Login' }))
-          // axios.defaults.baseURL = 'http://crm-leads.test'
-          // axios.post('/logout')
-          //   .then(() => {
-          //     this.$store.commit('USER_LOGOUT')
-          //     this.$router.push({ name: 'User Login' })
-          //   })
         } else {
           this.$router.push()
         }
