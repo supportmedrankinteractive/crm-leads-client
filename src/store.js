@@ -21,19 +21,21 @@ export default new Vuex.Store({
     },
     // profile: localStorage.getItem('profile') || {},
     registration_errors: {},
-    nameRules: [
-      v => !!v || 'Name is required',
-    ],
-    passwordRules: [
-      v => !!v || 'Password is required',
-    ],
-    notesRules: [
-      v => !!v || 'Notes is required for us to see the details of your request.',
-    ],
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
+    validation_rules: {
+      name: [
+        v => !!v || 'Name is required',
+      ],
+      password: [
+        v => !!v || 'Password is required',
+      ],
+      notes: [
+        v => !!v || 'Notes is required for us to see the details of your request.',
+      ],
+      email: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+    },
   },
   getters: {
     isUser (state) {

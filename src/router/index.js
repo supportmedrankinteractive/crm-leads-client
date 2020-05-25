@@ -102,7 +102,12 @@ export default new Router({
           component: () => import('@/views/dashboard/pages/UserProfile'),
         },
         {
-          path: '',
+          path: 'setup-user',
+          name: 'Setup User',
+          component: () => import('@/views/dashboard/pages/User'),
+        },
+        {
+          path: 'dashboard',
           name: 'Admin Dashboard',
           component: () => import('@/views/admin/Dashboard'),
         },

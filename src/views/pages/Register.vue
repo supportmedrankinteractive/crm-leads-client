@@ -82,7 +82,7 @@
                   >
                     <v-text-field
                       v-model="user.name"
-                      :rules="$store.state.nameRules"
+                      :rules="$store.state.validation_rules.name"
                       color="secondary"
                       label="Name..."
                       prepend-icon="mdi-face"
@@ -90,7 +90,7 @@
 
                     <v-text-field
                       v-model="user.email"
-                      :rules="$store.state.emailRules"
+                      :rules="$store.state.validation_rules.email"
                       color="secondary"
                       label="Email..."
                       prepend-icon="mdi-email"
@@ -98,7 +98,7 @@
 
                     <v-text-field
                       v-model="user.password"
-                      :rules="$store.state.passwordRules"
+                      :rules="$store.state.validation_rules.password"
                       class="mb-8"
                       color="secondary"
                       label="Password..."
@@ -107,7 +107,7 @@
 
                     <v-textarea
                       v-model="user.notes"
-                      :rules="$store.state.notesRules"
+                      :rules="$store.state.validation_rules.notes"
                       color="secondary"
                       label="Registration Notes..."
                       placeholder="i.e: I am requesting to register for Organic Clicks, LLC"
@@ -131,6 +131,15 @@
                     >
                       Register
                     </v-btn>
+                    <!-- <div v-if="Object.entries($state.registration_errors).length === 0">
+                      <ul>
+                        <li
+                          v-for="error in $state.registration_errors"
+                          :key="error"
+                          v-text="error[0]"
+                        />
+                      </ul>
+                    </div> -->
                   </v-form>
                 </div>
               </v-col>
@@ -200,7 +209,22 @@
           .then(() => {
             this.success_message = 'Registration request submitted. Please wait while admin is verifying your request. '
           })
+          .catch(errors => {
+            this.$store.commit('GET_ERROR_REGISTRATION', errors.errorInfo)
+            // errors.forEach(error => {
+            //   this.$state.validation_rules[error] = error[0]
+            // })
+            // console.log(error)
+          })
       },
+      // isEmpty (obj) {
+      //   for (var key in obj) {
+      //     if (obj.hasOwnProperty(key)) {
+      //       return false
+      //     }
+      //   }
+      //   return true
+      // },
     },
   }
 </script>

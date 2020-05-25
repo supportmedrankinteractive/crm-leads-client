@@ -53,9 +53,20 @@
           :key="`group-${i}`"
           :item="item"
         >
-        </base-item-group>
+          <base-item
+            v-if="$store.state.isAdmin && item.role == 'admin'"
+            :key="`item-${i}`"
+            :item="item"
+          />
 
-        <base-item
+          <base-item
+            v-else-if="$store.state.isUser && item.role == 'user'"
+            :key="`item-${i}`"
+            :item="item"
+          />
+        </base-item-group> -->
+
+        <!-- <base-item
           v-else
           :key="`item-${i}`"
           :item="item"
@@ -102,7 +113,13 @@
           icon: 'mdi-view-dashboard',
           title: 'Admin Dashboard',
           role: 'admin',
-          to: '/admin',
+          to: '/admin/dashboard',
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Setup User',
+          role: 'admin',
+          to: '/admin/setup-user',
         },
         {
           icon: 'mdi-view-dashboard',
