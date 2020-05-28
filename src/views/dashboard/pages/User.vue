@@ -55,10 +55,9 @@
                     <v-row>
                       <v-col
                         cols="12"
-                        md="6"
                       >
                         <v-text-field
-                          v-model="profile.name"
+                          v-model="user.name"
                           :rules="$store.state.nameRules"
                           class="purple-input"
                           label="Full Name"
@@ -67,31 +66,38 @@
 
                       <v-col
                         cols="12"
-                        md="6"
                       >
                         <v-text-field
-                          v-model="profile.email"
+                          v-model="user.email"
                           :rules="$store.state.emailRules"
                           label="Email Address"
                           class="purple-input"
                         />
                       </v-col>
 
+                      <v-col
+                        cols="12"
+                      >
+                        <v-text-field
+                          v-model="user.password"
+                          label="Password"
+                          class="purple-input"
+                        />
+                      </v-col>
+
                       <v-col cols="12">
                         <v-textarea
-                          v-model="profile.notes"
+                          v-model="user.notes"
                           class="purple-input"
                           label="Registration Notes"
-                          readonly
                         />
                       </v-col>
 
                       <v-col
                         cols="12"
-                        md="4"
                       >
                         <v-select
-                          v-model="profile.company"
+                          v-model="user.company"
                           :rules="[v => !!v || 'You must choose to continue!']"
                           label="Companies"
                           class="purple-input"
@@ -100,6 +106,19 @@
                           :items="$store.state.callrail.companies"
                           return-object
                         />
+                      </v-col>
+
+                      <v-col
+                        cols="12"
+                      >
+                        <v-btn
+                          :disabled="!valid"
+                          color="success"
+                          class="mr-4"
+                          @click="register"
+                        >
+                          Register
+                        </v-btn>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -216,6 +235,7 @@
   export default {
     data: () => ({
       profile: {},
+      user: {},
       valid: true,
       success_message: '',
       e1: 1,
@@ -264,8 +284,25 @@
           if (this.items[index].progress_percentage === 100) {
             return
           }
+          // Call CallRail API
+          // get the data array from Callrail then post it on the server
           this.items[index].progress_percentage += 10
         }, 1000)
+      },
+
+      register () {
+        this.$refs.form.validate()
+        this.$store.dispatch('userRegister', this.user)
+          .then(() => {
+            this.success_message = 'Registration request submitted. Please wait while admin is verifying your request. '
+          })
+          .catch(errors => {
+            this.$store.commit('GET_ERROR_REGISTRATION', errors.errorInfo)
+            // errors.forEach(error => {
+            //   this.$state.validation_rules[error] = error[0]
+            // })
+            // console.log(error)
+          })
       },
     },
   }

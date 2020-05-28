@@ -200,6 +200,7 @@ export default new Vuex.Store({
               email: payload.email,
               password: payload.password,
               notes: payload.notes,
+              company: payload.company,
             })
             .then(user => {
               // console.log(user.data)
