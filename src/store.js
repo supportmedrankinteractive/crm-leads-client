@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+import { callRailUrlAPI, siteUrlAPI } from './axios-instances'
 
 Vue.use(Vuex)
 
@@ -17,7 +17,7 @@ export default new Vuex.Store({
     callrail_calls: JSON.parse(localStorage.getItem('callrail_calls')) || {},
     users: [],
     callrail: {
-      companies: localStorage.getItem('companies') || [],
+      companies: JSON.parse(localStorage.getItem('companies')) || [],
     },
     // profile: localStorage.getItem('profile') || {},
     registration_errors: {},
@@ -53,6 +53,14 @@ export default new Vuex.Store({
 
     getProfile (state) {
       return state.profile
+    },
+
+    getCompanies (state) {
+      return state.callrail.companies
+    },
+
+    getParseJsonLeads (state) {
+      return state.callrail_calls.map(call => JSON.parse(call.content))
     },
   },
   mutations: {
@@ -108,11 +116,9 @@ export default new Vuex.Store({
 
     updateProfile ({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
-        axios.defaults.withCredentials = true
-        axios.get('/sanctum/csrf-cookie')
+        siteUrlAPI.get('/sanctum/csrf-cookie')
           .then(() => {
-            axios.put(`/api/users/${payload.id}`, {
+            siteUrlAPI.put(`/api/users/${payload.id}`, {
               name: payload.name,
               email: payload.email,
               password: payload.password,
@@ -133,16 +139,14 @@ export default new Vuex.Store({
 
     userLogin ({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
-        axios.defaults.withCredentials = true
-        axios.get('/sanctum/csrf-cookie')
+        siteUrlAPI.get('/sanctum/csrf-cookie')
           .then(response => {
-            axios.post('/login', {
+            siteUrlAPI.post('/login', {
               email: payload.email,
               password: payload.password,
             })
               .then(resp => {
-                axios.get('/api/user')
+                siteUrlAPI.get('/api/user')
                   .then(user => {
                     if (user.data.is_admin) {
                       localStorage.setItem('isAdmin', true)
@@ -166,11 +170,9 @@ export default new Vuex.Store({
 
     userLogout ({ commit }) {
       return new Promise((resolve, reject) => {
-        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
-        axios.defaults.withCredentials = true
-        axios.get('/sanctum/csrf-cookie')
+        siteUrlAPI.get('/sanctum/csrf-cookie')
           .then(resp => {
-            axios.post('/logout')
+            siteUrlAPI.post('/logout')
               .then(() => {
                 localStorage.removeItem('isAdmin')
                 localStorage.removeItem('admin')
@@ -191,11 +193,9 @@ export default new Vuex.Store({
 
     userRegister ({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
-        axios.defaults.withCredentials = true
-        axios.get('/sanctum/csrf-cookie')
+        siteUrlAPI.get('/sanctum/csrf-cookie')
           .then(() => {
-            axios.post('/api/users', {
+            siteUrlAPI.post('/api/users', {
               name: payload.name,
               email: payload.email,
               password: payload.password,
@@ -216,9 +216,7 @@ export default new Vuex.Store({
     },
 
     getUsers ({ commit }) {
-      axios.defaults.baseURL = process.env.VUE_APP_AXIOS_BASE_URL
-      axios.defaults.withCredentials = true
-      axios
+      siteUrlAPI
         .get('api/users')
         .then(response => {
           commit('GET_USERS', response)
@@ -226,11 +224,7 @@ export default new Vuex.Store({
     },
 
     getCallrailCompanies ({ commit }) {
-      axios.defaults.baseURL = process.env.VUE_APP_CALLRAIL_BASE_URL
-      axios.defaults.headers.authorization = `Token token=${process.env.VUE_APP_CALLRAIL_TOKEN}`
-      axios.defaults.withCredentials = false
-
-      axios
+      callRailUrlAPI
         .get('/companies.json?status=active')
         .then(response => {
           localStorage.setItem('companies', JSON.stringify(response.data))
@@ -240,20 +234,26 @@ export default new Vuex.Store({
 
     getProfileCallrail (context) {
       return new Promise((resolve, reject) => {
-        axios.defaults.baseURL = process.env.VUE_APP_CALLRAIL_BASE_URL
-        axios.defaults.headers.authorization = `Token token=${process.env.VUE_APP_CALLRAIL_TOKEN}`
-        axios.defaults.withCredentials = false
-
-        axios
-          .get(`/calls.json?fields=source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location,formatted_business_phone_number&company_id=${context.state.user.profile.callrail}&per_page=250`)
-          .then(response => {
-            localStorage.setItem('callrail_calls', JSON.stringify(response.data))
-            context.commit('GET_CALLRAIL_CALLS', response.data)
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error.errors)
-          })
+        siteUrlAPI.get('/sanctum/csrf-cookie')
+          .then(() => {
+            siteUrlAPI.get('/api/leads')
+            .then(leads => {
+            localStorage.setItem('callrail_calls', JSON.stringify(leads.data))
+            context.commit('GET_CALLRAIL_CALLS', leads.data)
+              resolve(leads)
+            })
+            .catch(error => {
+              reject(error.errors)
+            })
+        })
+      })
+    },
+    getUserCallrail ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        callRailUrlAPI
+          .get(`/calls.json?fields=source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location,formatted_business_phone_number&company_id=${payload.companyId}&per_page=250&page=${payload.currentPage}`)
+            .then(response => resolve(response))
+            .catch(error => reject(error.errors))
         })
     },
   },

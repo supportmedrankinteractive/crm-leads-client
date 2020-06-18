@@ -103,12 +103,13 @@
                           class="purple-input"
                           item-text="name"
                           item-value="id"
-                          :items="$store.state.callrail.companies"
+                          :items="$store.getters.getCompanies"
                           return-object
+                          @change="fetchFirstInstanceOfLeads"
                         />
                       </v-col>
 
-                      <v-col
+                      <!-- <v-col
                         cols="12"
                       >
                         <v-btn
@@ -119,7 +120,7 @@
                         >
                           Register
                         </v-btn>
-                      </v-col>
+                      </v-col> -->
                     </v-row>
                   </v-container>
                 </v-form>
@@ -169,7 +170,7 @@
                     <v-card-actions>
                       <v-btn
                         text
-                        @click="interval(i)"
+                        @click="migrateLeads(i)"
                       >
                         Migrate Now
                       </v-btn>
@@ -226,12 +227,32 @@
         <v-btn text>
           Cancel
         </v-btn>
+
+        <v-snackbar
+          v-model="created_user"
+          :timeout="timeout"
+        >
+          {{ success_message }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="blue"
+              text
+              v-bind="attrs"
+              @click="created_user = false"
+            >
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
 </template>
 
 <script>
+  import { siteUrlAPI } from '@/axios-instances'
+
   export default {
     data: () => ({
       profile: {},
@@ -241,31 +262,40 @@
       e1: 1,
       items: [
         {
+          id: 1,
           color: '#388aed',
           src: 'https://cdn.vuetifyjs.com/images/cards/foster.jpg',
           title: 'CallRail Leads',
-          description: 'You have 100 Leads from API',
+          description: 'You have 0 Leads from API',
           progress_percentage: 0,
+          url: '',
         },
         {
+          id: 2,
           color: '#3b5998',
           src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
           title: 'Facebook Leads',
-          description: 'You have 100 Leads from API',
+          description: 'You have 0 Leads from API',
           progress_percentage: 0,
+          url: '',
         },
         {
+          id: 3,
           color: '#385F73',
           src: 'https://cdn.vuetifyjs.com/images/cards/halcyon.png',
           title: 'Website Leads',
-          description: 'You have 100 Leads from API',
+          description: 'You have 0 Leads from API',
           progress_percentage: 0,
+          url: '',
         },
       ],
+      leads: {},
+      created_user: false,
+      timeout: 2000,
     }),
 
     async mounted () {
-      // this.$store.dispatch('getCallrailCompanies')
+      this.$store.dispatch('getCallrailCompanies')
       // this.profile = this.$store.state.profile
     },
 
@@ -279,22 +309,103 @@
           })
       },
 
-      interval (index) {
-        setInterval(() => {
-          if (this.items[index].progress_percentage === 100) {
-            return
-          }
-          // Call CallRail API
-          // get the data array from Callrail then post it on the server
-          this.items[index].progress_percentage += 10
-        }, 1000)
+      async fetchFirstInstanceOfLeads () {
+        // Call CallRail API
+        this.$store.dispatch('getUserCallrail', { companyId: this.user.company.id, currentPage: 1 })
+          .then(callrails => {
+            this.leads.callrail = callrails
+            // Index 0 is Callrail
+            this.items[0].description = `You have ${callrails.data.total_records} Leads from API`
+          })
+          .catch()
       },
 
-      register () {
+      migrateLeads (index) {
+        // this.register()
         this.$refs.form.validate()
         this.$store.dispatch('userRegister', this.user)
-          .then(() => {
-            this.success_message = 'Registration request submitted. Please wait while admin is verifying your request. '
+          .then(user => {
+            this.profile = user.data.profile
+            console.log(user.data.profile)
+            this.created_user = true
+            this.success_message = 'You have created a new user and assigned leads to his/her account.'
+            console.log('migrateLeads executes....')
+            // const status = 1
+            // let progressBar = 0
+            const page = 1
+
+            // Call CallRail API
+            // this.$store.dispatch('getUserCallrail', { companyId: this.user.company.id, currentPage: 1 })
+            //   .then(callrails => this.recursiveLeads(callrails, page, index))
+            //   .catch()
+            this.recursiveLeads(this.leads.callrail, page, index)
+          })
+      },
+
+      async recursiveLeads (callrails, page, index) {
+        const status = 1
+        let progressBar = 0
+        // let page = 1
+        console.log(callrails.data)
+        let callRailData = []
+        progressBar = Math.ceil(callrails.data.page / callrails.data.total_pages)
+
+        // if (page === 1) {
+        //   callRailData = callrails.data.calls
+        // }
+        callRailData = callrails.data.calls
+        console.log('first call of getUserCallrail')
+        console.log(`total pages is ${callrails.data.total_pages}`)
+        if (callrails.data.total_pages > 0) {
+          console.log('total pages > 0')
+          console.log(`progressBar is ${progressBar}`)
+
+          console.log('while running.......')
+          // get the data array from Callrail then post it on the server's leads api endpoint
+          // const postData = { callrailResponse: callRailData, profile_id: this.user.company.id, platform_id: this.items[index].id, status }
+
+          // const postToServer = await axios.post('http://crm-leads.test/api/lead', postData)
+          // postToServer.then(result => console.log(result))
+
+          siteUrlAPI.get('/sanctum/csrf-cookie')
+            .then(response => {
+              siteUrlAPI
+                .post('/api/leads', {
+                  callrailResponse: JSON.stringify(callRailData),
+                  profile_id: this.profile.id,
+                  platform_id: this.items[index].id,
+                  status,
+                })
+                .then(result => {
+                  console.log(result)
+                  page++
+                  if (result.status === 201 && callrails.data.page <= callrails.data.total_pages) {
+                    this.$store.dispatch('getUserCallrail', { companyId: this.user.company.id, currentPage: page })
+                      .then(newCallrails => {
+                        // this.items[index].progress_percentage += progressBar
+                        this.items[index].progress_percentage = (callrails.data.page / callrails.data.total_pages) * 100
+                        // set the progress bar
+                        progressBar = newCallrails.data.page
+                        this.recursiveLeads(newCallrails, page, index)
+                        console.log(`${page} calls of getUserCallrail`)
+                        // callRailData = newCallrails.data.calls
+                      })
+                  }
+                })
+                // .catch()
+            })
+        }
+        console.log('total pages > 0 is false')
+      },
+
+      async register () {
+        this.$refs.form.validate()
+        await this.$store.dispatch('userRegister', this.user)
+          .then(user => {
+            console.log('user profile '.user.data)
+            // this.profile = user.data.profile
+            this.success_message = 'You have created a new user and assigned leads to his/her account.'
+            this.created_user = true
           })
           .catch(errors => {
             this.$store.commit('GET_ERROR_REGISTRATION', errors.errorInfo)
@@ -304,6 +415,7 @@
             // console.log(error)
           })
       },
+
     },
   }
 </script>

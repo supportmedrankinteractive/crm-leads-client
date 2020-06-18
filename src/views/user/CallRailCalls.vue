@@ -37,9 +37,9 @@
 
         <v-data-table
           :headers="headers"
-          :items="$store.state.callrail_calls.calls"
+          :items="$store.getters.getParseJsonLeads"
           :search.sync="search"
-          :items-per-page="250"
+          :items-per-page="10"
           :options="pagination_options"
           :page-count="page_count"
           :sort-by="['name', 'office']"
@@ -159,8 +159,8 @@
       search: undefined,
       page_count: '',
     }),
-    mounted () {
-      // this.$store.dispatch('getProfileCallrail')
+    async mounted () {
+      this.$store.getters.getParseJsonLeads()
       this.page_count = this.$store.state.callrail_calls.total_records
       // alert(this.page_count)
       this.pagination_options = {
