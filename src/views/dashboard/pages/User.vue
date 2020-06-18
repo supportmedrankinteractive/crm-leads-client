@@ -326,10 +326,10 @@
         this.$store.dispatch('userRegister', this.user)
           .then(user => {
             this.profile = user.data.profile
-            console.log(user.data.profile)
+            // console.log(user.data.profile)
             this.created_user = true
             this.success_message = 'You have created a new user and assigned leads to his/her account.'
-            console.log('migrateLeads executes....')
+            // console.log('migrateLeads executes....')
             // const status = 1
             // let progressBar = 0
             const page = 1
@@ -344,23 +344,23 @@
 
       async recursiveLeads (callrails, page, index) {
         const status = 1
-        let progressBar = 0
+        // let progressBar = 0
         // let page = 1
-        console.log(callrails.data)
+        // console.log(callrails.data)
         let callRailData = []
-        progressBar = Math.ceil(callrails.data.page / callrails.data.total_pages)
+        // progressBar = Math.ceil(callrails.data.page / callrails.data.total_pages)
 
         // if (page === 1) {
         //   callRailData = callrails.data.calls
         // }
         callRailData = callrails.data.calls
-        console.log('first call of getUserCallrail')
-        console.log(`total pages is ${callrails.data.total_pages}`)
+        // console.log('first call of getUserCallrail')
+        // console.log(`total pages is ${callrails.data.total_pages}`)
         if (callrails.data.total_pages > 0) {
-          console.log('total pages > 0')
-          console.log(`progressBar is ${progressBar}`)
+          // console.log('total pages > 0')
+          // console.log(`progressBar is ${progressBar}`)
 
-          console.log('while running.......')
+          // console.log('while running.......')
           // get the data array from Callrail then post it on the server's leads api endpoint
           // const postData = { callrailResponse: callRailData, profile_id: this.user.company.id, platform_id: this.items[index].id, status }
 
@@ -377,7 +377,7 @@
                   status,
                 })
                 .then(result => {
-                  console.log(result)
+                  // console.log(result)
                   page++
                   if (result.status === 201 && callrails.data.page <= callrails.data.total_pages) {
                     this.$store.dispatch('getUserCallrail', { companyId: this.user.company.id, currentPage: page })
@@ -385,9 +385,9 @@
                         // this.items[index].progress_percentage += progressBar
                         this.items[index].progress_percentage = (callrails.data.page / callrails.data.total_pages) * 100
                         // set the progress bar
-                        progressBar = newCallrails.data.page
+                        // progressBar = newCallrails.data.page
                         this.recursiveLeads(newCallrails, page, index)
-                        console.log(`${page} calls of getUserCallrail`)
+                        // console.log(`${page} calls of getUserCallrail`)
                         // callRailData = newCallrails.data.calls
                       })
                   }
@@ -395,14 +395,14 @@
                 // .catch()
             })
         }
-        console.log('total pages > 0 is false')
+        // console.log('total pages > 0 is false')
       },
 
       async register () {
         this.$refs.form.validate()
         await this.$store.dispatch('userRegister', this.user)
           .then(user => {
-            console.log('user profile '.user.data)
+            // console.log('user profile '.user.data)
             // this.profile = user.data.profile
             this.success_message = 'You have created a new user and assigned leads to his/her account.'
             this.created_user = true
