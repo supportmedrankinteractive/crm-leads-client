@@ -5,53 +5,6 @@
     tag="section"
   >
     <v-row>
-      <v-col cols="12">
-        <base-material-card
-          icon="mdi-earth"
-          title="Visits Data by Top Cities"
-        >
-          <v-row>
-            <v-col
-              cols="12"
-              md="6"
-              class="mt-10"
-            >
-              <v-simple-table
-                class="ml-2"
-              >
-                <tbody>
-                  <tr
-                    v-for="(city, i) in cities"
-                    :key="i"
-                  >
-                    <td>
-                      <!-- <v-img
-                        :src="sale.flag"
-                        width="18"
-                      /> -->
-                    </td>
-                    <td v-text="cities[i][0]" />
-                    <td v-text="cities[i][1]" />
-                    <td v-text="((cities[i][1] / totalCalls) * 100).toFixed(2) + '%'" />
-                  </tr>
-                </tbody>
-              </v-simple-table>
-            </v-col>
-
-            <v-col
-              cols="12"
-              md="6"
-            >
-              <v-world-map
-                :country-data="countryData"
-                high-color="#838383"
-                low-color="#BBBBBB"
-              />
-            </v-col>
-          </v-row>
-        </base-material-card>
-      </v-col>
-
       <v-col
         cols="12"
         lg="4"
@@ -261,7 +214,7 @@
         </base-material-chart-card>
       </v-col>
 
-      <v-col
+      <!-- <v-col
         cols="12"
         sm="6"
         lg="3"
@@ -320,298 +273,133 @@
           sub-icon-color="red"
           sub-text="Get More Space..."
         />
+      </v-col> -->
+      <v-col
+        cols="12"
+        lg="6"
+      >
+        <base-material-card
+          id="coloured-line"
+          color="info"
+          icon="mdi-chart-timeline-variant"
+          class="px-4 py-3"
+        >
+          <template v-slot:after-heading>
+            <div class="display-1 mt-2 font-weight-light">
+              Coloured Line Chart
+              <span class="subtitle-1">— Rounded</span>
+            </div>
+          </template>
+
+          <chartist
+            :data="colouredLine.data"
+            :options="colouredLine.options"
+            type="Line"
+            style="max-height: 150px;"
+            class="mt-3"
+          />
+        </base-material-card>
+        <div class="py-3" />
+        <base-material-card
+          id="coloured-line"
+          color="warning"
+          icon="mdi-chart-timeline-variant"
+          class="px-4 py-3"
+        >
+          <template v-slot:after-heading>
+            <div class="display-1 font-weight-light mt-2">
+              Data Source
+              <span class="subtitle-1">— Multiple</span>
+            </div>
+          </template>
+
+          <chartist
+            :data="multipleLine.data"
+            :options="multipleLine.options"
+            type="Line"
+            style="max-height: 150px;"
+            class="mt-3"
+          />
+        </base-material-card>
       </v-col>
 
       <v-col
         cols="12"
-      >
-        <div
-          class="font-weight-light mt-1"
-          style="font-size: 25px"
-        >
-          Manage Listings
-        </div>
-      </v-col>
-
-      <v-col
-        sm="12"
-        md="4"
+        lg="6"
       >
         <base-material-card
-          color="transparent"
-          image
-          hover-reveal
+          id="multiple-bar"
+          color="success"
+          icon="mdi-poll-box"
+          class="px-4 py-3"
         >
-          <template v-slot:image>
-            <v-img
-              src="https://demos.creative-tim.com/vue-material-dashboard-pro/img/card-2.jpg"
-            />
-          </template>
-
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="mx-1"
-                  v-bind="attrs"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-view-split-vertical</v-icon>
-                </v-btn>
-              </template>
-
-              <span>View</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="success"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="success--text">
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Edit</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="error"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="error--text">
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Remove</span>
-            </v-tooltip>
-          </template>
-
-          <v-card-title class="justify-center font-weight-light">
-            Cozy 5 Stars Apartment
-          </v-card-title>
-
-          <v-card-text class="body-1 text-center mb-3 font-weight-light grey--text">
-            The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the life in Barcelona.
-          </v-card-text>
-
-          <template v-slot:actions>
-            <div class="display-2 font-weight-light grey--text">
-              $899/night
+          <template v-slot:after-heading>
+            <div class="display-1 mt-2 font-weight-light">
+              Patient Status
+              <span class="subtitle-1">— Bar Chart</span>
             </div>
-
-            <v-spacer />
-
-            <span class="caption grey--text font-weight-light">
-              <v-icon small>mdi-map-marker</v-icon>
-
-              Barcelona, Spain
-            </span>
           </template>
+
+          <chartist
+            :data="multipleBar.data"
+            :options="multipleBar.options"
+            type="Bar"
+            style="max-height: 150px;"
+            class="mt-3"
+          />
         </base-material-card>
-      </v-col>
+        <div class="py-3" />
 
-      <v-col
-        sm="12"
-        md="4"
-      >
         <base-material-card
-          color="transparent"
-          hover-reveal
-          image
+          id="pie"
+          color="success"
+          icon="mdi-chart-pie"
+          title="Cities"
+          class="px-4 py-3"
         >
-          <template v-slot:image>
-            <v-img
-              src="https://demos.creative-tim.com/vue-material-dashboard-pro/img/card-3.jpg"
-            />
-          </template>
+          <chartist
+            :data="pie.data"
+            :options="pie.options"
+            type="Pie"
+            style="max-height: 250px;"
+          />
 
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="mx-1"
-                  v-bind="attrs"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-view-split-vertical</v-icon>
-                </v-btn>
-              </template>
+          <v-divider class="ma-3" />
 
-              <span>View</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="success"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="success--text">
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Edit</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="error"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="error--text">
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Remove</span>
-            </v-tooltip>
-          </template>
-
-          <v-card-title class="justify-center font-weight-light">
-            Office Studio
-          </v-card-title>
-
-          <v-card-text class="body-1 text-center mb-3 font-weight-light grey--text">
-            The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the night life in London, UK.
-          </v-card-text>
-
-          <template v-slot:actions>
-            <div class="display-2 font-weight-light grey--text">
-              $1.119/night
+          <div class="px-3">
+            <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
+              Legend
             </div>
 
-            <v-spacer />
+            <v-row
+              align="center"
+              class="ma-0"
+            >
+              <v-avatar
+                class="mr-1"
+                color="info"
+                size="12"
+              />
 
-            <span class="caption grey--text font-weight-light">
-              <v-icon small>mdi-map-marker</v-icon>
+              <span class="mr-3 font-weight-light">Apple</span>
 
-              London, UK
-            </span>
-          </template>
-        </base-material-card>
-      </v-col>
+              <v-avatar
+                class="mr-1"
+                color="warning"
+                size="12"
+              />
 
-      <v-col
-        sm="12"
-        md="4"
-      >
-        <base-material-card
-          color="transparent"
-          hover-reveal
-          image
-        >
-          <template v-slot:image>
-            <v-img
-              src="https://demos.creative-tim.com/vue-material-dashboard-pro/img/card-1.jpg"
-            />
-          </template>
+              <span class="mr-3 font-weight-light">Samsung</span>
 
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="mx-1"
-                  v-bind="attrs"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-view-split-vertical</v-icon>
-                </v-btn>
-              </template>
+              <v-avatar
+                class="mr-1"
+                color="red"
+                size="12"
+              />
 
-              <span>View</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="success"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="success--text">
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Edit</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="error"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="error--text">
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Remove</span>
-            </v-tooltip>
-          </template>
-
-          <v-card-title class="justify-center font-weight-light">
-            Beautiful Castle
-          </v-card-title>
-
-          <v-card-text class="body-1 text-center mb-3 font-weight-light grey--text">
-            The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Milan.
-          </v-card-text>
-
-          <template v-slot:actions>
-            <div class="display-2 font-weight-light grey--text">
-              $459/night
-            </div>
-
-            <v-spacer />
-
-            <span class="caption grey--text font-weight-light">
-              <v-icon small>mdi-map-marker</v-icon>
-
-              Milan, Italy
-            </span>
-          </template>
+              <span class="mr-3 font-weight-light">Windows Phone</span>
+            </v-row>
+          </div>
         </base-material-card>
       </v-col>
     </v-row>
@@ -632,6 +420,24 @@
           RO: 600,
           BR: 550,
         },
+        colouredLine: {
+          data: {
+            labels: ["'06", "'07", "'08", "'09", "'10", "'11", "'12", "'13", "'14", "'15"],
+            series: [
+              [275, 500, 290, 55, 700, 700, 500, 750, 630, 900, 930],
+            ],
+          },
+          options: {
+            low: 0,
+            high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+            chartPadding: {
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+            },
+          },
+        },
         dailySalesChart: {
           data: {
             labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
@@ -640,9 +446,6 @@
             ],
           },
           options: {
-            lineSmooth: this.$chartist.Interpolation.cardinal({
-              tension: 0,
-            }),
             low: 0,
             high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
             chartPadding: {
@@ -651,6 +454,7 @@
               bottom: 0,
               left: 0,
             },
+            showPoint: false,
           },
         },
         dataCompletedTasksChart: {
@@ -661,9 +465,6 @@
             ],
           },
           options: {
-            lineSmooth: this.$chartist.Interpolation.cardinal({
-              tension: 0,
-            }),
             low: 0,
             high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
             chartPadding: {
@@ -683,6 +484,7 @@
             ],
           },
           options: {
+            lineSmooth: this.$chartist.Interpolation.none(),
             axisX: {
               showGrid: false,
             },
@@ -705,6 +507,68 @@
               },
             }],
           ],
+        },
+        multipleBar: {
+          data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            series: [
+              [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
+              [400, 200, 250, 575, 450, 300, 285, 370, 370, 410, 620, 690],
+            ],
+          },
+          options: {
+            seriesBarDistance: 10,
+            lineSmooth: this.$chartist.Interpolation.none(),
+            axisX: {
+              showGrid: false,
+            },
+            low: 0,
+            high: 900,
+            chartPadding: {
+              top: 0,
+              right: 5,
+              bottom: 0,
+              left: 0,
+            },
+          },
+          responsiveOptions: [
+            ['screen and (max-width: 640px)', {
+              seriesBarDistance: 5,
+              axisX: {
+                labelInterpolationFnc: function (value) {
+                  return value[0]
+                },
+              },
+            }],
+          ],
+        },
+        multipleLine: {
+          data: {
+            labels: ["'06", "'07", "'08", "'09", "'10", "'11", "'12", "'13", "'14", "'15"],
+            series: [
+              [275, 500, 290, 55, 700, 700, 500, 750, 630, 900, 930],
+              [575, 600, 490, 75, 300, 400, 700, 450, 130, 200, 330],
+              [575, 300, 890, 155, 640, 540, 800, 250, 230, 400, 630],
+            ],
+          },
+          options: {
+            low: 0,
+            high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+            chartPadding: {
+              top: 0,
+              right: 0,
+              bottom: 0,
+              left: 0,
+            },
+          },
+        },
+        pie: {
+          data: {
+            series: [62, 32, 6],
+          },
+          options: {
+            labelInterpolationFnc: (value) => `${value}%`,
+          },
         },
         headers: [
           {
