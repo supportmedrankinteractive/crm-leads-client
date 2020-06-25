@@ -37,10 +37,9 @@
 
         <v-data-table
           :headers="headers"
-          :items="$store.getters.getParseJsonLeads"
+          :items="callrails"
           :search.sync="search"
           :items-per-page="10"
-          :options="pagination_options"
           :page-count="page_count"
           :sort-by="['name', 'office']"
           :sort-desc="[false, true]"
@@ -160,7 +159,8 @@
       page_count: '',
     }),
     async mounted () {
-      this.$store.getters.getParseJsonLeads()
+      this.callrails = this.$store.getters.getParseJsonLeads
+
       this.page_count = this.$store.state.callrail_calls.total_records
       // alert(this.page_count)
       this.pagination_options = {

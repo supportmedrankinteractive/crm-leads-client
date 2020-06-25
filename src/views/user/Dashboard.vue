@@ -214,66 +214,12 @@
         </base-material-chart-card>
       </v-col>
 
-      <!-- <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="info"
-          icon="mdi-twitter"
-          title="Followers"
-          value="+245"
-          sub-icon="mdi-clock"
-          sub-text="Just Updated"
-        />
-      </v-col>
-
       <v-col
         cols="12"
-        sm="6"
-        lg="3"
+        lg="12"
       >
-        <base-material-stats-card
-          color="primary"
-          icon="mdi-poll"
-          title="Website Visits"
-          value="75.521"
-          sub-icon="mdi-tag"
-          sub-text="Tracked from Google Analytics"
-        />
       </v-col>
 
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="success"
-          icon="mdi-store"
-          title="Revenue"
-          value="$ 34,245"
-          sub-icon="mdi-calendar"
-          sub-text="Last 24 Hours"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="orange"
-          icon="mdi-sofa"
-          title="Bookings"
-          value="184"
-          sub-icon="mdi-alert"
-          sub-icon-color="red"
-          sub-text="Get More Space..."
-        />
-      </v-col> -->
       <v-col
         cols="12"
         lg="6"
@@ -349,8 +295,7 @@
           />
         </base-material-card>
         <div class="py-3" />
-
-        <base-material-card
+        <!-- <base-material-card
           id="pie"
           color="success"
           icon="mdi-chart-pie"
@@ -361,7 +306,6 @@
             :data="pie.data"
             :options="pie.options"
             type="Pie"
-            style="max-height: 250px;"
           />
 
           <v-divider class="ma-3" />
@@ -375,29 +319,123 @@
               align="center"
               class="ma-0"
             >
-              <v-avatar
-                class="mr-1"
-                color="info"
-                size="12"
-              />
+              <template
+                v-for="city in citiesGraph"
+              >
+                <v-avatar
+                  :key="city[0]"
+                  class="mr-1"
+                  :color="city[3]"
+                  size="12"
+                />
 
-              <span class="mr-3 font-weight-light">Apple</span>
+                <span
+                  :key="city[0]"
+                  class="mr-3 font-weight-light"
+                >
+                  {{ city[0] }}
+                </span>
+              </template>
+            </v-row>
+          </div>
+        </base-material-card> -->
+      </v-col>
 
-              <v-avatar
-                class="mr-1"
-                color="warning"
-                size="12"
-              />
+      <v-col
+        cols="12"
+        lg="6"
+      >
+        <base-material-card
+          id="pie"
+          color="success"
+          icon="mdi-chart-pie"
+          title="Cities"
+          class="px-4 py-3"
+        >
+          <chartist
+            :data="pie.data"
+            :options="pie.options"
+            type="Pie"
+          />
 
-              <span class="mr-3 font-weight-light">Samsung</span>
+          <v-divider class="ma-3" />
 
-              <v-avatar
-                class="mr-1"
-                color="red"
-                size="12"
-              />
+          <div class="px-3">
+            <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
+              Legend
+            </div>
 
-              <span class="mr-3 font-weight-light">Windows Phone</span>
+            <v-row
+              align="center"
+              class="ma-0"
+            >
+              <template
+                v-for="city in citiesGraph"
+              >
+                <v-avatar
+                  :key="city[0]"
+                  class="mr-1"
+                  :color="city[3]"
+                  size="12"
+                />
+
+                <span
+                  :key="city[0]"
+                  class="mr-3 font-weight-light"
+                >
+                  {{ city[0] }}
+                </span>
+              </template>
+            </v-row>
+          </div>
+        </base-material-card>
+      </v-col>
+
+      <v-col
+        cols="12"
+        lg="6"
+      >
+        <base-material-card
+          id="pie"
+          color="success"
+          icon="mdi-chart-pie"
+          title="Cities"
+          class="px-4 py-3"
+        >
+          <chartist
+            :data="pie.data"
+            :options="pie.options2"
+            type="Pie"
+          />
+
+          <v-divider class="ma-3" />
+
+          <div class="px-3">
+            <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
+              Legend
+            </div>
+
+            <v-row
+              align="center"
+              class="ma-0"
+            >
+              <template
+                v-for="city in citiesGraph"
+              >
+                <v-avatar
+                  :key="city[0]"
+                  class="mr-1"
+                  :color="city[3]"
+                  size="12"
+                />
+
+                <span
+                  :key="city[0]"
+                  class="mr-3 font-weight-light"
+                >
+                  {{ city[0] }}
+                </span>
+              </template>
             </v-row>
           </div>
         </base-material-card>
@@ -564,10 +602,18 @@
         },
         pie: {
           data: {
-            series: [62, 32, 6],
+            series: [],
           },
           options: {
             labelInterpolationFnc: (value) => `${value}%`,
+            width: '600px',
+            height: '450px',
+            donut: true,
+          },
+          options2: {
+            labelInterpolationFnc: (value) => `${value}%`,
+            width: '600px',
+            height: '450px',
           },
         },
         headers: [
@@ -675,30 +721,45 @@
           1: false,
           2: false,
         },
-        cities: [],
+        citiesGraph: [],
       }
     },
     computed: {
       totalCalls () {
-        return this.cities.reduce((acc, val) => acc + val[1], 0)
+        return this.citiesGraph.reduce((acc, val) => acc + val[1], 0)
       },
     },
     async mounted () {
       if (typeof (this.$store.state.callrail_calls.calls) === 'undefined') {
         await this.$store.dispatch('getProfileCallrail')
       }
-
-      const groupByCity = this.$store.state.callrail_calls.calls.reduce((acc, it) => {
+      // console.log('parsed json leads ', await this.$store.getters.getParseJsonLead)
+      const groupByCity = this.$store.getters.getParseJsonLeads.reduce((acc, it) => {
         acc[it.customer_city] = acc[it.customer_city] + 1 || 1
         return acc
       }, {})
 
       Object.entries(groupByCity).forEach(city => {
-        this.cities.push(city)
+        const cityPercentage = city[1] / this.$store.getters.getParseJsonLeads.length * 100
+        city[2] = cityPercentage
+        city[3] = this.getRandomColor()
+        this.citiesGraph.push(city)
+      })
+
+      this.citiesGraph.map(city => {
+        this.pie.data.series.push(city[2].toFixed(1))
       })
       // console.log('cities', this.totalCalls)
     },
     methods: {
+      getRandomColor () {
+        const letters = '0123456789ABCDEF'
+        let color = '#'
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)]
+        }
+        return color
+      },
       complete (index) {
         this.list[index] = !this.list[index]
       },
