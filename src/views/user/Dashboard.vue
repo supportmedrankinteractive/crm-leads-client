@@ -218,6 +218,27 @@
         cols="12"
         lg="12"
       >
+        <base-material-card
+          id="coloured-line"
+          color="warning"
+          icon="mdi-chart-timeline-variant"
+          class="px-4 py-3"
+        >
+          <template v-slot:after-heading>
+            <div class="display-1 font-weight-light mt-2">
+              Cities Bar
+              <span class="subtitle-1">— Multiple</span>
+            </div>
+          </template>
+
+          <chartist
+            :data="multipleLineCities.data"
+            :distributeSeries="distributeSeries"
+            type="Bar"
+            style="max-height: 150px;"
+            class="mt-3"
+          />
+        </base-material-card>
       </v-col>
 
       <v-col
@@ -254,7 +275,7 @@
         >
           <template v-slot:after-heading>
             <div class="display-1 font-weight-light mt-2">
-              Data Source
+              Data Source 1
               <span class="subtitle-1">— Multiple</span>
             </div>
           </template>
@@ -295,50 +316,27 @@
           />
         </base-material-card>
         <div class="py-3" />
-        <!-- <base-material-card
-          id="pie"
-          color="success"
-          icon="mdi-chart-pie"
-          title="Cities"
+        <base-material-card
+          id="coloured-line"
+          color="warning"
+          icon="mdi-chart-timeline-variant"
           class="px-4 py-3"
         >
-          <chartist
-            :data="pie.data"
-            :options="pie.options"
-            type="Pie"
-          />
-
-          <v-divider class="ma-3" />
-
-          <div class="px-3">
-            <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
-              Legend
+          <template v-slot:after-heading>
+            <div class="display-1 font-weight-light mt-2">
+              Cities Bar
+              <span class="subtitle-1">— Multiple</span>
             </div>
+          </template>
 
-            <v-row
-              align="center"
-              class="ma-0"
-            >
-              <template
-                v-for="city in citiesGraph"
-              >
-                <v-avatar
-                  :key="city[0]"
-                  class="mr-1"
-                  :color="city[3]"
-                  size="12"
-                />
-
-                <span
-                  :key="city[0]"
-                  class="mr-3 font-weight-light"
-                >
-                  {{ city[0] }}
-                </span>
-              </template>
-            </v-row>
-          </div>
-        </base-material-card> -->
+          <chartist
+            :data="multipleLineCities.data"
+            :distributeSeries="distributeSeries"
+            type="Bar"
+            style="max-height: 150px;"
+            class="mt-3"
+          />
+        </base-material-card>
       </v-col>
 
       <v-col
@@ -349,12 +347,12 @@
           id="pie"
           color="success"
           icon="mdi-chart-pie"
-          title="Cities"
+          title="Source Data"
           class="px-4 py-3"
         >
           <chartist
-            :data="pie.data"
-            :options="pie.options"
+            :data="sourcePie.data"
+            :options="sourcePie.options"
             type="Pie"
           />
 
@@ -370,20 +368,20 @@
               class="ma-0"
             >
               <template
-                v-for="city in citiesGraph"
+                v-for="source in sourceGraph"
               >
                 <v-avatar
-                  :key="city[0]"
+                  :key="source[0]"
                   class="mr-1"
-                  :color="city[3]"
+                  :color="source[3]"
                   size="12"
                 />
 
                 <span
-                  :key="city[0]"
+                  :key="source[0]"
                   class="mr-3 font-weight-light"
                 >
-                  {{ city[0] }}
+                  {{ source[0] }}
                 </span>
               </template>
             </v-row>
@@ -403,8 +401,8 @@
           class="px-4 py-3"
         >
           <chartist
-            :data="pie.data"
-            :options="pie.options2"
+            :data="multipleLineCities.data"
+            :options="multipleLineCities.options2"
             type="Pie"
           />
 
@@ -412,7 +410,7 @@
 
           <div class="px-3">
             <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
-              Legend
+              Other Cities - {{ (100 - totalPctOfTopFive).toFixed(1) }}%
             </div>
 
             <v-row
@@ -420,20 +418,20 @@
               class="ma-0"
             >
               <template
-                v-for="city in citiesGraph"
+                v-for="city in otherCityNames"
               >
                 <v-avatar
-                  :key="city[0]"
+                  :key="city[0] + city[1]"
                   class="mr-1"
                   :color="city[3]"
                   size="12"
                 />
 
                 <span
-                  :key="city[0]"
+                  :key="city[0] + city[1]"
                   class="mr-3 font-weight-light"
                 >
-                  {{ city[0] }}
+                  {{ `${city[0]} - ${city[2].toFixed(2)}%` }}
                 </span>
               </template>
             </v-row>
@@ -582,14 +580,18 @@
         },
         multipleLine: {
           data: {
-            labels: ["'06", "'07", "'08", "'09", "'10", "'11", "'12", "'13", "'14", "'15"],
+            // labels: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+            // series: [20, 60, 120, 200, 180, 20, 10],
+            labels: [],
             series: [
               [275, 500, 290, 55, 700, 700, 500, 750, 630, 900, 930],
               [575, 600, 490, 75, 300, 400, 700, 450, 130, 200, 330],
               [575, 300, 890, 155, 640, 540, 800, 250, 230, 400, 630],
             ],
           },
+          distributeSeries: true,
           options: {
+            // distributeSeries: true,
             low: 0,
             high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
             chartPadding: {
@@ -600,8 +602,41 @@
             },
           },
         },
+        multipleLineCities: {
+          data: {
+            labels: [],
+            series: [],
+            // labels: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+            // series: [
+            //   [20, 60, 120, 200, 180, 20, 10],
+            // ],
+          },
+          options: {
+            lineSmooth: this.$chartist.Interpolation.none(),
+            axisX: {
+              showGrid: false,
+            },
+            low: 0,
+            high: 200,
+            chartPadding: {
+              top: 0,
+              right: 5,
+              bottom: 0,
+              left: 0,
+            },
+          },
+          options2: {
+            labelInterpolationFnc: (value) => `${value}%`,
+            width: '600px',
+            height: '450px',
+            chartPadding: 30,
+            labelOffset: 100,
+            labelDirection: 'explode',
+          },
+        },
         pie: {
           data: {
+            labels: [],
             series: [],
           },
           options: {
@@ -614,6 +649,25 @@
             labelInterpolationFnc: (value) => `${value}%`,
             width: '600px',
             height: '450px',
+          },
+        },
+        sourcePie: {
+          data: {
+            series: [],
+          },
+          options: {
+            labelInterpolationFnc: (value) => `${value}%`,
+            width: '600px',
+            height: '450px',
+            chartPadding: 30,
+            labelOffset: 100,
+            labelDirection: 'explode',
+          },
+          options2: {
+            labelInterpolationFnc: (value) => `${value}%`,
+            width: '600px',
+            height: '450px',
+            donut: true,
           },
         },
         headers: [
@@ -722,6 +776,9 @@
           2: false,
         },
         citiesGraph: [],
+        sourceGraph: [],
+        otherCityNames: [],
+        totalPctOfTopFive: null,
       }
     },
     computed: {
@@ -746,10 +803,50 @@
         this.citiesGraph.push(city)
       })
 
-      this.citiesGraph.map(city => {
-        this.pie.data.series.push(city[2].toFixed(1))
+      // this.citiesGraph.map(city => {
+      //   // this.multipleLineCities.data.labels.push(city[0])
+      //   this.multipleLineCities.data.series.push(city[2])
+      // })
+
+      // Get Others except Top 5 %
+      this.citiesGraph
+        .sort((a, b) => b[2] - a[2]).slice(6, this.citiesGraph.length)
+        .reduce((acc, pct) => {
+          return acc + pct[1]
+        }, 0)
+
+      // GET Others City names except Top 5
+      this.otherCityNames = this.citiesGraph
+        .sort((a, b) => b[2] - a[2]).slice(6, this.citiesGraph.length)
+
+      // Get Top 5
+      this.citiesGraph
+        .sort((a, b) => b[2] - a[2]).slice(0, 5)
+        .map(city => {
+          this.multipleLineCities.data.labels.push(`${city[0]} - ${city[2].toFixed(1)}`)
+          this.multipleLineCities.data.series.push(city[2].toFixed(1))
+        })
+
+      // Get Total % of Top 5
+      this.totalPctOfTopFive = this.multipleLineCities.data.series.reduce((acc, val) => acc + parseFloat(val), 0)
+
+      const groupByFormattedSource = this.$store.getters.getParseJsonLeads.reduce((acc, it) => {
+        acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+        return acc
+      }, {})
+
+      Object.entries(groupByFormattedSource).forEach(source => {
+        const sourcePercentage = source[1] / this.$store.getters.getParseJsonLeads.length * 100
+        source[2] = sourcePercentage
+        source[3] = this.getRandomColor()
+        this.sourceGraph.push(source)
       })
-      // console.log('cities', this.totalCalls)
+
+      this.sourceGraph.map(source => {
+        // this.sourcePie.data.labels.push(source[0])
+        this.sourcePie.data.series.push(source[2].toFixed(1))
+      })
+      // console.log('source data ', groupByFormattedSource)
     },
     methods: {
       getRandomColor () {
