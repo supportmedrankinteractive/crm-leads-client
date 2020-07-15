@@ -23,10 +23,19 @@ import './plugins/vue-world-map'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
 import axios from 'axios'
+// Do not forget to import raphael
+import Raphael from 'raphael/raphael'
+import jQuery from 'jquery'
+
+// This is needed by Morris
+global.Raphael = Raphael
+global.jQuery = jQuery
 
 axios.defaults.withCredentials = true
 
 Vue.config.productionTip = false
+
+Vue.use(require('vue-chartist'))
 
 // Vue.mixin({
 //   created: function () {

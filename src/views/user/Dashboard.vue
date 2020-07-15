@@ -7,385 +7,24 @@
     <v-row>
       <v-col
         cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="emailsSubscriptionChart.data"
-          :options="emailsSubscriptionChart.options"
-          :responsive-options="emailsSubscriptionChart.responsiveOptions"
-          color="primary"
-          hover-reveal
-          type="Bar"
-        >
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  color="info"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon
-                    color="info"
-                  >
-                    mdi-refresh
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Refresh</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Change Date</span>
-            </v-tooltip>
-          </template>
-
-          <h4 class="card-title font-weight-light mt-2 ml-2">
-            Website Views
-          </h4>
-
-          <p class="d-inline-flex font-weight-light ml-2 mt-1">
-            Last Campaign Performance
-          </p>
-
-          <template v-slot:actions>
-            <v-icon
-              class="mr-1"
-              small
-            >
-              mdi-clock-outline
-            </v-icon>
-            <span class="caption grey--text font-weight-light">updated 10 minutes ago</span>
-          </template>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="dailySalesChart.data"
-          :options="dailySalesChart.options"
-          color="success"
-          hover-reveal
-          type="Line"
-        >
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  color="info"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon
-                    color="info"
-                  >
-                    mdi-refresh
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Refresh</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Change Date</span>
-            </v-tooltip>
-          </template>
-
-          <h4 class="card-title font-weight-light mt-2 ml-2">
-            Daily Sales
-          </h4>
-
-          <p class="d-inline-flex font-weight-light ml-2 mt-1">
-            <v-icon
-              color="green"
-              small
-            >
-              mdi-arrow-up
-            </v-icon>
-            <span class="green--text">55%</span>&nbsp;
-            increase in today's sales
-          </p>
-
-          <template v-slot:actions>
-            <v-icon
-              class="mr-1"
-              small
-            >
-              mdi-clock-outline
-            </v-icon>
-            <span class="caption grey--text font-weight-light">updated 4 minutes ago</span>
-          </template>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="dataCompletedTasksChart.data"
-          :options="dataCompletedTasksChart.options"
-          hover-reveal
-          color="info"
-          type="Line"
-        >
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  color="info"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon
-                    color="info"
-                  >
-                    mdi-refresh
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Refresh</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Change Date</span>
-            </v-tooltip>
-          </template>
-
-          <h3 class="card-title font-weight-light mt-2 ml-2">
-            Completed Tasks
-          </h3>
-
-          <p class="d-inline-flex font-weight-light ml-2 mt-1">
-            Last Last Campaign Performance
-          </p>
-
-          <template v-slot:actions>
-            <v-icon
-              class="mr-1"
-              small
-            >
-              mdi-clock-outline
-            </v-icon>
-            <span class="caption grey--text font-weight-light">campaign sent 26 minutes ago</span>
-          </template>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
         lg="12"
-      >
-        <base-material-card
-          id="coloured-line"
-          color="warning"
-          icon="mdi-chart-timeline-variant"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 font-weight-light mt-2">
-              Cities Bar
-              <span class="subtitle-1">— Multiple</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="multipleLineCities.data"
-            :distributeSeries="distributeSeries"
-            type="Bar"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="6"
-      >
-        <base-material-card
-          id="coloured-line"
-          color="info"
-          icon="mdi-chart-timeline-variant"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 mt-2 font-weight-light">
-              Coloured Line Chart
-              <span class="subtitle-1">— Rounded</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="colouredLine.data"
-            :options="colouredLine.options"
-            type="Line"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-        <div class="py-3" />
-        <base-material-card
-          id="coloured-line"
-          color="warning"
-          icon="mdi-chart-timeline-variant"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 font-weight-light mt-2">
-              Data Source 1
-              <span class="subtitle-1">— Multiple</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="multipleLine.data"
-            :options="multipleLine.options"
-            type="Line"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="6"
-      >
-        <base-material-card
-          id="multiple-bar"
-          color="success"
-          icon="mdi-poll-box"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 mt-2 font-weight-light">
-              Patient Status
-              <span class="subtitle-1">— Bar Chart</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="multipleBar.data"
-            :options="multipleBar.options"
-            type="Bar"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-        <div class="py-3" />
-        <base-material-card
-          id="coloured-line"
-          color="warning"
-          icon="mdi-chart-timeline-variant"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 font-weight-light mt-2">
-              Cities Bar
-              <span class="subtitle-1">— Multiple</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="multipleLineCities.data"
-            :distributeSeries="distributeSeries"
-            type="Bar"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="6"
       >
         <base-material-card
           id="pie"
           color="success"
           icon="mdi-chart-pie"
-          title="Source Data"
+          title="Source"
           class="px-4 py-3"
         >
-          <chartist
-            :data="sourcePie.data"
-            :options="sourcePie.options"
-            type="Pie"
+          <line-chart
+            id="sourceLineChart"
+            :data="sourceLineChartData"
+            xkey="year"
+            :ykeys="sourceLineChartDataKeys"
+            :colors="getCityColor"
+            :labels="sourceLineChartsDataLabel"
+            resize="true"
           />
-
-          <v-divider class="ma-3" />
-
-          <div class="px-3">
-            <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
-              Legend
-            </div>
-
-            <v-row
-              align="center"
-              class="ma-0"
-            >
-              <template
-                v-for="source in sourceGraph"
-              >
-                <v-avatar
-                  :key="source[0]"
-                  class="mr-1"
-                  :color="source[3]"
-                  size="12"
-                />
-
-                <span
-                  :key="source[0]"
-                  class="mr-3 font-weight-light"
-                >
-                  {{ source[0] }}
-                </span>
-              </template>
-            </v-row>
-          </div>
         </base-material-card>
       </v-col>
 
@@ -400,10 +39,12 @@
           title="Cities"
           class="px-4 py-3"
         >
-          <chartist
-            :data="multipleLineCities.data"
-            :options="multipleLineCities.options2"
-            type="Pie"
+          <donut-chart
+            id="donut"
+            :data="cityDonutData"
+            :colors="getCityColor"
+            :formatter="value => value + '%'"
+            resize="true"
           />
 
           <v-divider class="ma-3" />
@@ -418,20 +59,20 @@
               class="ma-0"
             >
               <template
-                v-for="city in otherCityNames"
+                v-for="source in cityDonutData"
               >
                 <v-avatar
-                  :key="city[0] + city[1]"
+                  :key="source.label"
                   class="mr-1"
-                  :color="city[3]"
+                  :color="source.color"
                   size="12"
                 />
 
                 <span
-                  :key="city[0] + city[1]"
+                  :key="source.label"
                   class="mr-3 font-weight-light"
                 >
-                  {{ `${city[0]} - ${city[2].toFixed(2)}%` }}
+                  {{ source.label }}
                 </span>
               </template>
             </v-row>
@@ -443,11 +84,25 @@
 </template>
 
 <script>
+  import { DonutChart, LineChart } from 'vue-morris'
   export default {
     name: 'UserDashboard',
-
+    components: {
+      DonutChart,
+      LineChart,
+    },
     data () {
       return {
+        sourceLineChartData2: [
+          { year: '2011', a: 100, b: 150 },
+          { year: '2012', a: 140, b: 220 },
+          { year: '2013', a: 300, b: 160 },
+          { year: '2014', a: 200, b: 230 },
+        ],
+        sourceLineChartDataKeys: ['Google Ads', 'Google My Business', 'Organic & Local Search', 'Organic Search', 'Google Organic'],
+        cityDonutData: [],
+        sourceLineChartData: [],
+        sourceLineChartsDataLabel: ['Google Ads', 'Google My Business', 'Organic & Local Search', 'Organic Search', 'Google Organic'],
         countryData: {
           US: 2920,
           DE: 1390,
@@ -582,11 +237,11 @@
           data: {
             // labels: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
             // series: [20, 60, 120, 200, 180, 20, 10],
-            labels: [],
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             series: [
-              [275, 500, 290, 55, 700, 700, 500, 750, 630, 900, 930],
-              [575, 600, 490, 75, 300, 400, 700, 450, 130, 200, 330],
-              [575, 300, 890, 155, 640, 540, 800, 250, 230, 400, 630],
+              [275, 500, 290, 55, 700, 700, 500, 750, 630, 900, 930, 343],
+              [575, 600, 490, 75, 300, 400, 700, 450, 130, 200, 330, 322],
+              [575, 300, 890, 155, 640, 540, 800, 250, 230, 400, 630, 844],
             ],
           },
           distributeSeries: true,
@@ -602,6 +257,12 @@
             },
           },
         },
+        multipleLineCitiesBar: {
+          data: {
+            labels: [],
+            series: [],
+          },
+        },
         multipleLineCities: {
           data: {
             labels: [],
@@ -612,6 +273,7 @@
             // ],
           },
           options: {
+            colors: 'red',
             lineSmooth: this.$chartist.Interpolation.none(),
             axisX: {
               showGrid: false,
@@ -630,8 +292,8 @@
             width: '600px',
             height: '450px',
             chartPadding: 30,
-            labelOffset: 100,
-            labelDirection: 'explode',
+            labelOffset: 30,
+            // labelDirection: 'explode',
           },
         },
         pie: {
@@ -777,6 +439,7 @@
         },
         citiesGraph: [],
         sourceGraph: [],
+        cityNames: [],
         otherCityNames: [],
         totalPctOfTopFive: null,
       }
@@ -802,7 +465,7 @@
         city[3] = this.getRandomColor()
         this.citiesGraph.push(city)
       })
-
+      // console.log('Group by city', groupByCity)
       // this.citiesGraph.map(city => {
       //   // this.multipleLineCities.data.labels.push(city[0])
       //   this.multipleLineCities.data.series.push(city[2])
@@ -822,9 +485,14 @@
       // Get Top 5
       this.citiesGraph
         .sort((a, b) => b[2] - a[2]).slice(0, 5)
-        .map(city => {
-          this.multipleLineCities.data.labels.push(`${city[0]} - ${city[2].toFixed(1)}`)
+        .forEach(city => {
+          const labelColor = this.getRandomColor()
+          this.cityNames.push([labelColor, city[0]])
+          // this.cityNames.labels.push(city[0])
+          // this.multipleLineCities.data.series.push({ value: city[2].toFixed(1), className: city[0] })
           this.multipleLineCities.data.series.push(city[2].toFixed(1))
+          this.cityDonutData.push({ label: city[0], value: city[2].toFixed(1), color: labelColor })
+          // this.cityDonutDataColors.push(labelColor)
         })
 
       // Get Total % of Top 5
@@ -835,20 +503,79 @@
         return acc
       }, {})
 
-      Object.entries(groupByFormattedSource).forEach(source => {
-        const sourcePercentage = source[1] / this.$store.getters.getParseJsonLeads.length * 100
-        source[2] = sourcePercentage
-        source[3] = this.getRandomColor()
-        this.sourceGraph.push(source)
-      })
+      // Object.entries(groupByFormattedSource).forEach(source => {
+      //   const sourcePercentage = source[1] / this.$store.getters.getParseJsonLeads.length * 100
+      //   source[2] = sourcePercentage
+      //   source[3] = this.getRandomColor()
+      //   this.sourceGraph.push(source)
+      // })
 
-      this.sourceGraph.map(source => {
-        // this.sourcePie.data.labels.push(source[0])
-        this.sourcePie.data.series.push(source[2].toFixed(1))
+      // this.sourceGraph.map(source => {
+      //   // this.sourcePie.data.labels.push(source[0])
+      //   this.sourcePie.data.series.push(source[1].toFixed(1))
+      // })
+
+      const groupByFormattedByDate = this.$store.getters.getParseJsonLeads.reduce((groups, game) => {
+        const date = game.start_time.split('T')[0]
+        // const date = game.formatted_tracking_source
+        if (!groups[date]) {
+          groups[date] = []
+        }
+        groups[date].push(game)
+        return groups
+      }, {})
+
+      // console.log('object entries, ', groupByFormattedByDate)
+      // flatten array of date
+      // const flattenGroupByFormattedByDate = groupByFormattedByDate.map(formattedSourceByDate => {
+      //   return [].concat(...formattedSourceByDate)
+      // })
+
+      // console.log('flattened ', flattenGroupByFormattedByDate)
+      const flattenedFormattedDateGroupByCity = Object.entries(groupByFormattedByDate).map(formattedDate => {
+        const fDate = formattedDate[1].reduce((acc, it) => {
+          acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+          return acc
+        }, {})
+        const stringFDate = fDate
+        // this.sourceLineChartDataKeys = Object.keys(fDate)
+        // this.sourceLineChartsDataLabel = Object.keys(fDate)
+        return { year: formattedDate[0], ...stringFDate }
       })
+      // const finalFlattenedData = flattenedFormattedDateGroupByCity.forEach(fd => {
+      //   return [...fd.label, ...fd.value]
+      // })
+      this.sourceLineChartData = flattenedFormattedDateGroupByCity
+      // console.log('flattened', flattenedFormattedDateGroupByCity)
+
+      Object.keys(groupByFormattedSource).forEach(source => {
+        console.log(source)
+      })
+      // this.sourceGraph.forEach(source => {
+      //   this.sourcePie.data
+      // })
       // console.log('source data ', groupByFormattedSource)
+      console.log('date data ', groupByFormattedByDate)
+
+      console.log('Object entries', Object.entries(groupByFormattedByDate))
+
+      // Object.keys(groupByFormattedSource).forEach(source => {
+      //   Object.entries(groupByFormattedByDate).forEach(byDate => {
+      //     this.multipleLineCitiesBar.data.labels.push(byDate[0])
+      //     byDate[1].forEach(byd => {
+      //       console.log(byd.formatted_tracking_source)
+      //       if (byd.formatted_tracking_source === source) {
+      //         this.multipleLineCitiesBar.data.series.push(byd)
+      //         console.log(byDate)
+      //       }
+      //     })
+      //   })
+      // })
     },
     methods: {
+      getCityColor () {
+        return this.cityDonutData.map(city => city.color)
+      },
       getRandomColor () {
         const letters = '0123456789ABCDEF'
         let color = '#'
@@ -866,3 +593,20 @@
     },
   }
 </script>
+
+<style scoped>
+.ct-series-a .ct-slice-pie {
+  fill: blue !important;
+}
+.ct-slice-pie:nth-child(1){
+    fill: #379683 !important;
+}
+
+.ct-slice-pie:nth-child(2){
+    fill: red !important;
+}
+
+.ct-slice-pie:nth-child(3){
+    fill: #EFB200 !important;
+}
+</style>
