@@ -264,7 +264,7 @@ export default new Vuex.Store({
         })
     },
     addFollowUp ({ commit }, payload) {
-      console.log('store method ', payload)
+      // console.log('store method ', payload)
       return new Promise((resolve, reject) => {
         siteUrlAPI.post('/api/follow-ups', {
           lead_id: payload.lead_id,
