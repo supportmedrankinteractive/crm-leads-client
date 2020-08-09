@@ -60,7 +60,9 @@ export default new Vuex.Store({
     },
 
     getParseJsonLeads (state) {
-      return state.callrail_calls.map(call => JSON.parse(call.content))
+      return state.callrail_calls.map(call => {
+        return { ...JSON.parse(call.content), follow_ups: call.follow_ups, lead_id: call.id }
+      })
     },
   },
   mutations: {
@@ -107,6 +109,10 @@ export default new Vuex.Store({
     GET_CALLRAIL_CALLS (state, payload) {
       state.callrail_calls = payload
     },
+    ADD_FOLLOW_UP (state, payload) {
+      const followUp = { ...payload, icon: 'mdi-clock', order: 1 }
+      state.callrail_calls.find(lead => lead.id === payload.lead_id).follow_ups.unshift(followUp)
+    },
   },
   actions: {
     getProfile ({ commit }, payload) {
@@ -146,6 +152,7 @@ export default new Vuex.Store({
               password: payload.password,
             })
               .then(resp => {
+                console.log(resp.data)
                 siteUrlAPI.get('/api/user')
                   .then(user => {
                     if (user.data.is_admin) {
@@ -238,8 +245,8 @@ export default new Vuex.Store({
           .then(() => {
             siteUrlAPI.get('/api/leads')
             .then(leads => {
-            localStorage.setItem('callrail_calls', JSON.stringify(leads.data))
-            context.commit('GET_CALLRAIL_CALLS', leads.data)
+              localStorage.setItem('callrail_calls', JSON.stringify(leads.data))
+              context.commit('GET_CALLRAIL_CALLS', leads.data)
               resolve(leads)
             })
             .catch(error => {
@@ -255,6 +262,18 @@ export default new Vuex.Store({
             .then(response => resolve(response))
             .catch(error => reject(error.errors))
         })
+    },
+    addFollowUp ({ commit }, payload) {
+      console.log('store method ', payload)
+      return new Promise((resolve, reject) => {
+        siteUrlAPI.post('/api/follow-ups', {
+          lead_id: payload.lead_id,
+          text: payload.text,
+          date_at: new Date(payload.date),
+        })
+          .then(followUp => resolve(followUp))
+          .catch(error => reject(error.errors))
+      })
     },
   },
 })

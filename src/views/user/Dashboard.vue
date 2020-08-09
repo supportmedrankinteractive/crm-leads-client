@@ -549,15 +549,15 @@
       // console.log('flattened', flattenedFormattedDateGroupByCity)
 
       Object.keys(groupByFormattedSource).forEach(source => {
-        console.log(source)
+        // console.log(source)
       })
       // this.sourceGraph.forEach(source => {
       //   this.sourcePie.data
       // })
       // console.log('source data ', groupByFormattedSource)
-      console.log('date data ', groupByFormattedByDate)
+      // console.log('date data ', groupByFormattedByDate)
 
-      console.log('Object entries', Object.entries(groupByFormattedByDate))
+      // console.log('Object entries', Object.entries(groupByFormattedByDate))
 
       // Object.keys(groupByFormattedSource).forEach(source => {
       //   Object.entries(groupByFormattedByDate).forEach(byDate => {

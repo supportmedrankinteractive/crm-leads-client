@@ -68,6 +68,17 @@
               {{ item.formatted_customer_phone_number }}
             </div>
           </template>
+          <template v-slot:item.follow_ups="{ item }">
+            <follow-ups
+              :source="item.follow_ups"
+              v-if="item.follow_ups.length > 0"
+            />
+            <add-follow-up
+              :lead_id="item.lead_id"
+              @add-follow-up="pushToFollowUp"
+              v-else
+            />
+          </template>
         </v-data-table>
       </base-material-card>
     </div>
@@ -115,12 +126,13 @@
 
 <script>
   import moment from 'moment'
-  // Vue.prototype.moment = moment
 
   export default {
     name: 'CallRailCalls',
     components: {
       PagesBtn: () => import('../pages/components/Btn'),
+      FollowUps: () => import('../utilities/FollowUps'),
+      AddFollowUp: () => import('../utilities/AddFollowUp'),
     },
     data: () => ({
       headers: [
@@ -152,17 +164,23 @@
           text: 'Location',
           value: 'formatted_customer_location',
         },
+        {
+          text: 'Follow Ups',
+          value: 'follow_ups',
+        },
       ],
       callrails: [],
       pagination_options: {},
       search: undefined,
       page_count: '',
+      expanded: [],
+      singleExpand: true,
     }),
     async mounted () {
       this.callrails = this.$store.getters.getParseJsonLeads
 
       this.page_count = this.$store.state.callrail_calls.total_records
-      // alert(this.page_count)
+
       this.pagination_options = {
         page: this.$store.state.callrail_calls.page,
         itemsPerPage: this.$store.state.callrail_calls.per_page,
@@ -178,6 +196,10 @@
       },
       formatDuration (secs) {
         return moment.utc(secs * 1000).format('mm.ss') + 's'
+      },
+      pushToFollowUp (e) {
+        const followUp = { ...e, icon: 'mdi-clock', order: 1 }
+        this.$store.commit('ADD_FOLLOW_UP', followUp)
       },
     },
   }
