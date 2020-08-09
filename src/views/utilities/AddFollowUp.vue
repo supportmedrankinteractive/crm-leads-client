@@ -117,19 +117,16 @@
     },
     props: ['lead_id'],
     mounted () {
-      console.log('lead id', this.lead_id)
+      // console.log('lead id', this.lead_id)
     },
     methods: {
       addFollowUp () {
         const followUp = { ...this.form, lead_id: this.lead_id }
-        console.log(followUp)
+        // console.log(followUp)
         this.$store.dispatch('addFollowUp', followUp)
           .then(() => {
             this.$emit('add-follow-up', followUp)
             this.dialog = false
-          })
-          .catch(err => {
-            console.log('error ', err)
           })
         this.form = { text: '', date: '' }
       },

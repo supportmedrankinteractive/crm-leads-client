@@ -152,7 +152,7 @@ export default new Vuex.Store({
               password: payload.password,
             })
               .then(resp => {
-                console.log(resp.data)
+                // console.log(resp.data)
                 siteUrlAPI.get('/api/user')
                   .then(user => {
                     if (user.data.is_admin) {
