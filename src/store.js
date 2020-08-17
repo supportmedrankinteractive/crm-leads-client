@@ -61,7 +61,7 @@ export default new Vuex.Store({
 
     getParseJsonLeads (state) {
       return state.callrail_calls.map(call => {
-        return { ...JSON.parse(call.content), follow_ups: call.follow_ups, lead_id: call.id }
+        return { ...JSON.parse(call.content), follow_ups: call.follow_ups, lead_id: call.id, status: call.status }
       })
     },
   },
@@ -264,7 +264,6 @@ export default new Vuex.Store({
         })
     },
     addFollowUp ({ commit }, payload) {
-      // console.log('store method ', payload)
       return new Promise((resolve, reject) => {
         siteUrlAPI.post('/api/follow-ups', {
           lead_id: payload.lead_id,
@@ -272,6 +271,16 @@ export default new Vuex.Store({
           date_at: new Date(payload.date),
         })
           .then(followUp => resolve(followUp))
+          .catch(error => reject(error.errors))
+      })
+    },
+    updateLeadStatus ({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        siteUrlAPI.put(`/api/leads/${payload.id}`, {
+          lead_id: payload.id,
+          status: payload.status,
+        })
+          .then(lead => resolve(lead))
           .catch(error => reject(error.errors))
       })
     },

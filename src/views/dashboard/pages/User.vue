@@ -343,7 +343,7 @@
       },
 
       async recursiveLeads (callrails, page, index) {
-        const status = 1
+        const status = 'New Patient'
         // let progressBar = 0
         // let page = 1
         // console.log(callrails.data)

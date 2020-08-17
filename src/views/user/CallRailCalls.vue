@@ -79,6 +79,17 @@
               v-else
             />
           </template>
+          <template v-slot:item.status="{ item }">
+            <!-- <v-select
+              :items="status"
+              v-model="leadStatus"
+              :value="item.status"
+              label="Status"
+              min-height=20
+              outlined
+            ></v-select> -->
+            <status-lead :lead="item" />
+          </template>
         </v-data-table>
       </base-material-card>
     </div>
@@ -133,6 +144,7 @@
       PagesBtn: () => import('../pages/components/Btn'),
       FollowUps: () => import('../utilities/FollowUps'),
       AddFollowUp: () => import('../utilities/AddFollowUp'),
+      StatusLead: () => import('../utilities/StatusLead'),
     },
     data: () => ({
       headers: [
@@ -168,6 +180,10 @@
           text: 'Follow Ups',
           value: 'follow_ups',
         },
+        {
+          text: 'Status',
+          value: 'status',
+        },
       ],
       callrails: [],
       pagination_options: {},
@@ -175,6 +191,8 @@
       page_count: '',
       expanded: [],
       singleExpand: true,
+      status: ['New Patient', 'Existing Patient'],
+      leadStatus: '',
     }),
     async mounted () {
       this.callrails = this.$store.getters.getParseJsonLeads
@@ -204,3 +222,8 @@
     },
   }
 </script>
+<style scoped>
+.v-select__selections {
+  min-height: 30px
+}
+</style>
