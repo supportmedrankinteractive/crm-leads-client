@@ -31,6 +31,20 @@
                 sm="12"
                 md="12"
               >
+                <v-select
+                  v-model="form.order"
+                  item-text="text"
+                  item-value="order"
+                  label="Select Follow Up"
+                  :items="items"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="12"
+                md="12"
+              >
                 <v-textarea
                   v-model="form.text"
                   label="Enter your note"
@@ -109,9 +123,15 @@
         dialog: false,
         item: {},
         form: {
+          order: '',
           text: '',
           date: '',
         },
+        items: [
+          { order: 1, text: 'Follow up #1' },
+          { order: 2, text: 'Follow up #2' },
+          { order: 3, text: 'Follow up #3' },
+        ],
         modal: false,
       }
     },

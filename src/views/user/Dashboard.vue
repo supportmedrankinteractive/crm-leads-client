@@ -88,7 +88,7 @@
           id="pie"
           color="success"
           icon="mdi-chart-pie"
-          title="Status"
+          title="New vs Existing Phone Calls"
           class="px-4 py-3"
         >
           <bar-chart

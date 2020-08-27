@@ -110,7 +110,7 @@ export default new Vuex.Store({
       state.callrail_calls = payload
     },
     ADD_FOLLOW_UP (state, payload) {
-      const followUp = { ...payload, icon: 'mdi-clock', order: 1 }
+      const followUp = { ...payload, icon: 'mdi-clock' }
       state.callrail_calls.find(lead => lead.id === payload.lead_id).follow_ups.unshift(followUp)
     },
   },
@@ -268,6 +268,7 @@ export default new Vuex.Store({
         siteUrlAPI.post('/api/follow-ups', {
           lead_id: payload.lead_id,
           text: payload.text,
+          order: payload.order,
           date_at: new Date(payload.date),
         })
           .then(followUp => resolve(followUp))

@@ -34,8 +34,8 @@
               <!-- <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
               </v-list-item-icon> -->
-              <v-list-item-content>
-                <v-list-item-title v-html="`<strong>Follow up #${item.order}</strong> ${item.text} on ${formatDate(item.date_at)}`" />
+              <v-list-item-content v-html="`<strong>Follow up #${item.order}</strong> ${item.text} on ${formatDate(item.date_at)}`">
+                <!-- <v-list-item-title v-html="`<strong>Follow up #${item.order}</strong> ${item.text} on ${formatDate(item.date_at)}`" /> -->
               </v-list-item-content>
             </v-list-item>
           </v-list-item-group>
