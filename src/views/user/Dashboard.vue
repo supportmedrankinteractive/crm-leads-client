@@ -276,7 +276,7 @@
         return { year: formattedDate[0], ...stringFDate }
       })
       this.statusBarChart.data = flattenedFormattedStatusGroupByCity
-      console.log('group by status', flattenedFormattedStatusGroupByCity)
+      // console.log('group by status', flattenedFormattedStatusGroupByCity)
     },
     methods: {
       getCityColor () {
