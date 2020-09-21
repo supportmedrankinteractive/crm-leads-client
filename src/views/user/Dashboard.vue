@@ -21,6 +21,7 @@
             :data="sourceLineChartData"
             xkey="year"
             :ykeys="sourceLineChartDataKeys"
+            continuousLine=true
             :colors="getCityColor"
             :labels="sourceLineChartsDataLabel"
             resize="true"
@@ -191,6 +192,7 @@
         acc[it.customer_city] = acc[it.customer_city] + 1 || 1
         return acc
       }, {})
+      // console.log('group by city', groupByCity)
 
       Object.entries(groupByCity).forEach(city => {
         const cityPercentage = city[1] / this.$store.getters.getParseJsonLeads.length * 100
@@ -243,7 +245,14 @@
 
       const flattenedFormattedDateGroupByCity = Object.entries(groupByFormattedByDate).map(formattedDate => {
         const fDate = formattedDate[1].reduce((acc, it) => {
-          acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+          // acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+          this.sourceLineChartDataKeys.forEach(dataKeys => {
+            if (dataKeys !== it.formatted_tracking_source) {
+              acc[dataKeys] = acc[dataKeys] + 0 || 0
+            } else {
+              acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+            }
+          })
           return acc
         }, {})
         const stringFDate = fDate
