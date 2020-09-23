@@ -22,7 +22,6 @@
             xkey="year"
             :ykeys="sourceLineChartDataKeys"
             continuousLine=true
-            :colors="getCityColor"
             :labels="sourceLineChartsDataLabel"
             resize="true"
           />
