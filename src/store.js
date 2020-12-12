@@ -60,9 +60,16 @@ export default new Vuex.Store({
     },
 
     getParseJsonLeads (state) {
+      // var startDate = new Date('2020-10-08')
+      // var endDate = new Date('2020-10-12')
       return state.callrail_calls.map(call => {
         return { ...JSON.parse(call.content), follow_ups: call.follow_ups, lead_id: call.id, status: call.status }
       })
+    },
+    filterDate (state, getters) {
+      var startDate = new Date('2020-10-04')
+      var endDate = new Date('2020-10-12')
+      return state.callrail_calls.filter(calls => JSON.parse(calls.content).start_date >= startDate && JSON.parse(calls.content).start_date <= endDate)
     },
   },
   mutations: {
@@ -258,7 +265,7 @@ export default new Vuex.Store({
     getUserCallrail ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         callRailUrlAPI
-          .get(`/calls.json?fields=source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location,formatted_business_phone_number&company_id=${payload.companyId}&per_page=250&page=${payload.currentPage}`)
+          .get(`/calls.json?fields=tags,source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location,formatted_business_phone_number&company_id=${payload.companyId}&tags=New Customer&per_page=250&page=${payload.currentPage}&date_range=all_time`)
             .then(response => resolve(response))
             .catch(error => reject(error.errors))
         })

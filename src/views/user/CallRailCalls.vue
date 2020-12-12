@@ -23,21 +23,27 @@
           </div>
         </template>
 
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          class="ml-auto"
-          label="Search"
-          hide-details
-          single-line
-          style="max-width: 250px;"
-        />
+        <v-rows>
+          <v-col
+            cols="12"
+          >
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              class="ml-auto"
+              label="Search"
+              hide-details
+              single-line
+              style="max-width: 250px;"
+            />
+          </v-col>
+        </v-rows>
 
         <v-divider class="mt-3" />
 
         <v-data-table
           :headers="headers"
-          :items="callrails"
+          :items="getParsedCallrails"
           :search.sync="search"
           :items-per-page="10"
           :page-count="page_count"
@@ -70,13 +76,13 @@
           </template>
           <template v-slot:item.follow_ups="{ item }">
             <follow-ups
-              :source="item.follow_ups"
               v-if="item.follow_ups.length > 0"
+              :source="item.follow_ups"
             />
             <add-follow-up
+              v-else
               :lead_id="item.lead_id"
               @add-follow-up="pushToFollowUp"
-              v-else
             />
           </template>
           <template v-slot:item.status="{ item }">
@@ -137,6 +143,7 @@
 
 <script>
   import moment from 'moment'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'CallRailCalls',
@@ -186,6 +193,7 @@
         },
       ],
       callrails: [],
+      callrailsUnFiltered: [],
       pagination_options: {},
       search: undefined,
       page_count: '',
@@ -194,8 +202,32 @@
       status: ['New Patient', 'Existing Patient'],
       leadStatus: '',
     }),
+    computed: {
+      ...mapGetters({
+        getParsedCallrails: 'getParseJsonLeads',
+      }),
+    },
+    watch: {
+      getParsedCallrails (val) {
+        this.getParsedCallrails = val
+        // this.callrails = val
+        // console.log(`from watcher ${val}`)
+      },
+    },
     async mounted () {
-      this.callrails = this.$store.getters.getParseJsonLeads
+      // var startDate = new Date('2020-10-07')
+      // this.callrails = this.$store.getters.getParseJsonLeads
+      // var filtered = this.callrails.filter(call => {
+      //   if (moment(call.start_time).format('YYYY-MM-DD') === moment(new Date('2020-10-07')).format('YYYY-MM-DD')) {
+      //     return true
+      //   }
+      //   // console.log(`${moment(call.start_time).format('YYYY-MM-DD')}`)
+      // })
+      console.log(new Date())
+      // console.log(`today ${moment(new Date('2020-10-07')).format('YYYY-MM-DD')}`)
+      // .filter(call => new Date(call.created_at) === startDate)
+      // this.callrailsUnFiltered = this.$store.getters.getParseJsonLeads
+      // this.callrails = this.$store.getters.filterDate
 
       this.page_count = this.$store.state.callrail_calls.total_records
 
@@ -207,6 +239,19 @@
         pageCount: this.$store.state.callrail_calls.total_pages,
         itemsLength: this.$store.state.callrail_calls.total_records,
       }
+      // alert(moment().startOf('month'))
+      var ourDate = new Date()
+
+      // Change it so that it is 7 days in the past.
+      var pastDate = ourDate.getDate() - 7
+      ourDate.setDate(pastDate)
+
+      // Log the date to our web console.
+      var date = new Date()
+      date.setDate(date.getDate() - 30)
+
+      // console.log(moment().subtract(10, 'days').calendar('YYYY-MM-DD'))
+      // alert(moment(date).format())
     },
     methods: {
       formatDate (value) {

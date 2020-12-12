@@ -62,8 +62,9 @@
                   md="4"
                 >
                   <v-select
-                    v-model="profile.company"
+                    v-model="profile.profile.callrail"
                     :rules="[v => !!v || 'You must choose to continue!']"
+                    :value="profile.profile.callrail"
                     label="Companies"
                     class="purple-input"
                     item-text="name"
@@ -112,19 +113,19 @@
       >
         <base-material-card
           class="v-card-profile"
-          avatar="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
+          avatar="https://medrankinteractive.com/wp-content/uploads/2020/04/lamar-circle.png"
         >
           <v-card-text class="text-center">
             <h6 class="display-1 mb-1 grey--text">
-              CEO / CO-FOUNDER
+              CEO
             </h6>
 
             <h4 class="display-2 font-weight-light mb-3 black--text">
-              Alec Thompson
+              Lamar Hull
             </h4>
 
             <p class="font-weight-light grey--text">
-              Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+              Lamar Hull is the Founder of Med Rank Interactive, a full-service digital marketing agency in Charlotte that specializes in local SEO exclusively for dentists, orthodontists, pharmacists, independent physicians, and multi-location medical practices.
             </p>
 
             <v-btn
@@ -145,13 +146,17 @@
   export default {
     data: () => ({
       profile: {},
+      company_name: '',
       valid: true,
       success_message: '',
     }),
 
     async mounted () {
       // this.$store.dispatch('getCallrailCompanies')
-      this.profile = this.$store.state.profile
+      this.profile = await this.$store.state.profile
+      this.company_name = await this.$store.state.profile.profile.company_name
+      // alert(this.company_name)
+      console.log(this.profile)
     },
 
     methods: {

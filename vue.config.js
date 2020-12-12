@@ -1,6 +1,6 @@
 module.exports = {
   devServer: {
-    host: 'app.crm-leads.test'
+    host: 'app.server.test'
   },
 
   transpileDependencies: ['vue-world-map', 'vuetify'],

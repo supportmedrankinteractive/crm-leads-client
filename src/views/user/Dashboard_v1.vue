@@ -22,8 +22,7 @@
             xkey="year"
             :ykeys="sourceLineChartDataKeys"
             continuousLine=true
-            behaveLikeLine=true
-            hideHover="auto"
+            :line-colors="lineColors"
             :event-line-colors="lineColors"
             :labels="sourceLineChartsDataLabel"
             resize="true"
@@ -193,13 +192,7 @@
     },
     watch: {
       getParsedCallrails (val) {
-        this.citiesGraph = []
-        this.otherCityNames = []
-        this.totalPctOfTopFive = null
-        this.cityDonutData = []
         this.getParsedCallrails = val
-        this.filterData()
-        this.getCityColor()
         // this.callrails = val
         // console.log(`from watcher ${val}`)
       },
@@ -208,8 +201,108 @@
       // await this.$store.dispatch('getProfileCallrail')
       if (typeof (this.$store.state.callrail_calls.calls) === 'undefined') {
         await this.$store.dispatch('getProfileCallrail')
-        // this.filterData()
       }
+      // console.log('parsed json leads ', await this.$store.getters.getParseJsonLead)
+      const groupByCity = this.getParsedCallrails.reduce((acc, it) => {
+        acc[it.customer_city] = acc[it.customer_city] + 1 || 1
+        return acc
+      }, {})
+      // console.log('group by city', groupByCity)
+
+      Object.entries(groupByCity).forEach(city => {
+        const cityPercentage = city[1] / this.getParsedCallrails.length * 100
+        city[2] = cityPercentage
+        city[3] = this.getRandomColor()
+        this.citiesGraph.push(city)
+      })
+
+      // Get Others except Top 5 %
+      this.citiesGraph
+        .sort((a, b) => b[2] - a[2]).slice(6, this.citiesGraph.length)
+        .reduce((acc, pct) => {
+          return acc + pct[1]
+        }, 0)
+
+      // GET Others City names except Top 5
+      this.otherCityNames = this.citiesGraph
+        .sort((a, b) => b[2] - a[2]).slice(6, this.citiesGraph.length)
+
+      // Get Top 5
+      this.citiesGraph
+        .sort((a, b) => b[2] - a[2]).slice(0, 5)
+        .forEach(city => {
+          const labelColor = this.getRandomColor()
+          this.cityNames.push([labelColor, city[0]])
+          // this.cityNames.labels.push(city[0])
+          // this.multipleLineCities.data.series.push({ value: city[2].toFixed(1), className: city[0] })
+          this.multipleLineCities.data.series.push(city[2].toFixed(1))
+          this.cityDonutData.push({ label: city[0], value: city[2].toFixed(1), color: labelColor })
+          // this.cityDonutDataColors.push(labelColor)
+        })
+
+      // Get Total % of Top 5
+      this.totalPctOfTopFive = this.multipleLineCities.data.series.reduce((acc, val) => acc + parseFloat(val), 0)
+
+      const groupByFormattedSource = this.getParsedCallrails.reduce((acc, it) => {
+        acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+        return acc
+      }, {})
+
+      const groupByFormattedByDate = this.getParsedCallrails.reduce((groups, game) => {
+        const date = game.start_time.split('T')[0]
+        // const date = game.formatted_tracking_source
+        if (!groups[date]) {
+          groups[date] = []
+        }
+        groups[date].push(game)
+        return groups
+      }, {})
+
+      const flattenedFormattedDateGroupByCity = Object.entries(groupByFormattedByDate).map(formattedDate => {
+        const fDate = formattedDate[1].reduce((acc, it) => {
+          // acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+          this.sourceLineChartDataKeys.forEach(dataKeys => {
+            if (dataKeys !== it.formatted_tracking_source) {
+              acc[dataKeys] = acc[dataKeys] + 0 || 0
+            } else {
+              acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
+            }
+          })
+          return acc
+        }, {})
+        const stringFDate = fDate
+        // this.sourceLineChartDataKeys = Object.keys(fDate)
+        // this.sourceLineChartsDataLabel = Object.keys(fDate)
+        return { year: formattedDate[0], ...stringFDate }
+      })
+      // const finalFlattenedData = flattenedFormattedDateGroupByCity.forEach(fd => {
+      //   return [...fd.label, ...fd.value]
+      // })
+      this.sourceLineChartData = flattenedFormattedDateGroupByCity
+
+      Object.keys(groupByFormattedSource).forEach(source => {
+        // console.log(source)
+      })
+
+      // const groupByStatus = this.getParsedCallrails.reduce((acc, it) => {
+      //   acc[it.status] = acc[it.status] + 1 || 1
+      //   return acc
+      // }, {})
+
+      const flattenedFormattedStatusGroupByCity = Object.entries(groupByFormattedByDate).map(formattedDate => {
+        const fDate = formattedDate[1].reduce((acc, it) => {
+          acc[it.status] = acc[it.status] + 1 || 1
+          return acc
+        }, {})
+        const stringFDate = fDate
+        // this.sourceLineChartDataKeys = Object.keys(fDate)
+        // this.sourceLineChartsDataLabel = Object.keys(fDate)
+        return { year: formattedDate[0], ...stringFDate }
+      })
+      this.statusBarChart.data = flattenedFormattedStatusGroupByCity
+      // console.log('group by status', flattenedFormattedStatusGroupByCity)
+      // console.log(this.getCityColor())
+      this.lineColors = this.getCityColor()
     },
     methods: {
       getCityColor () {
@@ -228,109 +321,6 @@
       },
       groupBy (gby) {
         return gby
-      },
-      filterData () {
-        // console.log('parsed json leads ', await this.$store.getters.getParseJsonLead)
-        const groupByCity = this.getParsedCallrails.reduce((acc, it) => {
-          acc[it.customer_city] = acc[it.customer_city] + 1 || 1
-          return acc
-        }, {})
-        // console.log('group by city', groupByCity)
-
-        Object.entries(groupByCity).forEach(city => {
-          const cityPercentage = city[1] / this.getParsedCallrails.length * 100
-          city[2] = cityPercentage
-          city[3] = this.getRandomColor()
-          this.citiesGraph.push(city)
-        })
-
-        // Get Others except Top 5 %
-        this.citiesGraph
-          .sort((a, b) => b[2] - a[2]).slice(6, this.citiesGraph.length)
-          .reduce((acc, pct) => {
-            return acc + pct[1]
-          }, 0)
-
-        // GET Others City names except Top 5
-        this.otherCityNames = this.citiesGraph
-          .sort((a, b) => b[2] - a[2]).slice(6, this.citiesGraph.length)
-
-        // Get Top 5
-        this.citiesGraph
-          .sort((a, b) => b[2] - a[2]).slice(0, 5)
-          .forEach(city => {
-            const labelColor = this.getRandomColor()
-            this.cityNames.push([labelColor, city[0]])
-            // this.cityNames.labels.push(city[0])
-            // this.multipleLineCities.data.series.push({ value: city[2].toFixed(1), className: city[0] })
-            this.multipleLineCities.data.series.push(city[2].toFixed(1))
-            this.cityDonutData.push({ label: city[0], value: city[2].toFixed(1), color: labelColor })
-            // this.cityDonutDataColors.push(labelColor)
-          })
-
-        // Get Total % of Top 5
-        this.totalPctOfTopFive = this.multipleLineCities.data.series.reduce((acc, val) => acc + parseFloat(val), 0)
-
-        const groupByFormattedSource = this.getParsedCallrails.reduce((acc, it) => {
-          acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
-          return acc
-        }, {})
-
-        const groupByFormattedByDate = this.getParsedCallrails.reduce((groups, game) => {
-          const date = game.start_time.split('T')[0]
-          // const date = game.formatted_tracking_source
-          if (!groups[date]) {
-            groups[date] = []
-          }
-          groups[date].push(game)
-          return groups
-        }, {})
-
-        const flattenedFormattedDateGroupByCity = Object.entries(groupByFormattedByDate).map(formattedDate => {
-          const fDate = formattedDate[1].reduce((acc, it) => {
-            // acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
-            this.sourceLineChartDataKeys.forEach(dataKeys => {
-              if (dataKeys !== it.formatted_tracking_source) {
-                acc[dataKeys] = acc[dataKeys] + 0 || 0
-              } else {
-                acc[it.formatted_tracking_source] = acc[it.formatted_tracking_source] + 1 || 1
-              }
-            })
-            return acc
-          }, {})
-          const stringFDate = fDate
-          // this.sourceLineChartDataKeys = Object.keys(fDate)
-          // this.sourceLineChartsDataLabel = Object.keys(fDate)
-          return { year: formattedDate[0], ...stringFDate }
-        })
-        // const finalFlattenedData = flattenedFormattedDateGroupByCity.forEach(fd => {
-        //   return [...fd.label, ...fd.value]
-        // })
-        this.sourceLineChartData = flattenedFormattedDateGroupByCity
-
-        Object.keys(groupByFormattedSource).forEach(source => {
-          // console.log(source)
-        })
-
-        // const groupByStatus = this.getParsedCallrails.reduce((acc, it) => {
-        //   acc[it.status] = acc[it.status] + 1 || 1
-        //   return acc
-        // }, {})
-
-        const flattenedFormattedStatusGroupByCity = Object.entries(groupByFormattedByDate).map(formattedDate => {
-          const fDate = formattedDate[1].reduce((acc, it) => {
-            acc[it.status] = acc[it.status] + 1 || 1
-            return acc
-          }, {})
-          const stringFDate = fDate
-          // this.sourceLineChartDataKeys = Object.keys(fDate)
-          // this.sourceLineChartsDataLabel = Object.keys(fDate)
-          return { year: formattedDate[0], ...stringFDate }
-        })
-        this.statusBarChart.data = flattenedFormattedStatusGroupByCity
-        // console.log('group by status', flattenedFormattedStatusGroupByCity)
-        // console.log(this.getCityColor())
-        this.lineColors = this.getCityColor()
       },
     },
   }

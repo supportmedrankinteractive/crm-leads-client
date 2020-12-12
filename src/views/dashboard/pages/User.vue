@@ -5,6 +5,7 @@
   >
     <v-stepper-header>
       <v-stepper-step
+        editable
         :complete="e1 > 1"
         step="1"
       >
@@ -28,7 +29,9 @@
     </v-stepper-header>
 
     <v-stepper-items>
-      <v-stepper-content step="1">
+      <v-stepper-content
+        step="1"
+      >
         <v-container
           id="user-profile"
           fluid
@@ -146,6 +149,7 @@
 
       <v-stepper-content step="2">
         <v-container>
+          <h1> {{ user.company ? user.company.name: '' }} </h1>
           <v-row dense>
             <v-col
               v-for="(item, i) in items"
@@ -290,6 +294,48 @@
         },
       ],
       leads: {},
+      date_range: [
+        {
+          text: 'Recent (Prior 30 Days)',
+          value: 'recent',
+        },
+        {
+          text: 'Today',
+          value: 'today',
+        },
+        {
+          text: 'Yesterday',
+          value: 'yesterday',
+        },
+        {
+          text: 'Last 7 Days',
+          value: 'last_7_days',
+        },
+        {
+          text: 'Last 30 Days',
+          value: 'last_30_days',
+        },
+        {
+          text: 'This Month',
+          value: 'this_month',
+        },
+        {
+          text: 'Last Month',
+          value: 'last_month',
+        },
+        {
+          text: 'This Year',
+          value: 'this_year',
+        },
+        {
+          text: 'Last Year',
+          value: 'last_year',
+        },
+        {
+          text: 'All Time',
+          value: 'all_time',
+        },
+      ],
       created_user: false,
       timeout: 2000,
     }),
@@ -315,7 +361,7 @@
           .then(callrails => {
             this.leads.callrail = callrails
             // Index 0 is Callrail
-            this.items[0].description = `You have ${callrails.data.total_records} Leads from API`
+            this.items[0].description = `${callrails.data.total_records} new calls from Callrail`
           })
           .catch()
       },
