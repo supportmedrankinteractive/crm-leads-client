@@ -19,11 +19,11 @@
           <line-chart
             id="sourceLineChart"
             :data="sourceLineChartData"
+            :events="sourceLineChartData"
             xkey="year"
             :ykeys="sourceLineChartDataKeys"
-            continuousLine=true
-            behaveLikeLine=true
-            hideHover="auto"
+            hideHover="false"
+            :line-colors="lineColors"
             :event-line-colors="lineColors"
             :labels="sourceLineChartsDataLabel"
             resize="true"

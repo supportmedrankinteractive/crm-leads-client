@@ -223,7 +223,6 @@
       //   }
       //   // console.log(`${moment(call.start_time).format('YYYY-MM-DD')}`)
       // })
-      console.log(new Date())
       // console.log(`today ${moment(new Date('2020-10-07')).format('YYYY-MM-DD')}`)
       // .filter(call => new Date(call.created_at) === startDate)
       // this.callrailsUnFiltered = this.$store.getters.getParseJsonLeads

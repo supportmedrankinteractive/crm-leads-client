@@ -156,7 +156,7 @@
       this.profile = await this.$store.state.profile
       this.company_name = await this.$store.state.profile.profile.company_name
       // alert(this.company_name)
-      console.log(this.profile)
+      // console.log(this.profile)
     },
 
     methods: {

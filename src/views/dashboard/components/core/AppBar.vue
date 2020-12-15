@@ -252,13 +252,13 @@
       ],
     }),
 
+    computed: {
+      ...mapState(['drawer']),
+    },
+
     mounted () {
       // this.getFilteredDate()
       // console.log(`today ${moment(new Date('2020-10-07')).format('YYYY-MM-DD')}`)
-    },
-
-    computed: {
-      ...mapState(['drawer']),
     },
 
     methods: {
@@ -349,13 +349,10 @@
           })
         }
         this.$store.commit('GET_CALLRAIL_CALLS', filtered)
-        console.log('filtered', filtered)
-        console.log(`filtered date is ${noOfDays}`)
+        // console.log('filtered', filtered)
+        // console.log(`filtered date is ${noOfDays}`)
         // console.log(moment().subtract(1, 'years').calendar())
       },
-    },
-    watch: {
-
     },
   }
 </script>

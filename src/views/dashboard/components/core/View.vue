@@ -29,6 +29,11 @@
   import moment from 'moment'
   export default {
     name: 'DashboardCoreView',
+
+    components: {
+      DashboardCoreFooter: () => import('./Footer'),
+    },
+
     data: () => ({
       date_range: '',
       items_date_range: [
@@ -70,9 +75,7 @@
         },
       ],
     }),
-    components: {
-      DashboardCoreFooter: () => import('./Footer'),
-    },
+
     methods: {
       async getFilteredDate () {
         var filtered = []
