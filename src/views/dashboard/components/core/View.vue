@@ -154,8 +154,8 @@
           })
         }
         this.$store.commit('GET_CALLRAIL_CALLS', filtered)
-        console.log('filtered', filtered)
-        console.log(`filtered date is ${noOfDays}`)
+        // console.log('filtered', filtered)
+        // console.log(`filtered date is ${noOfDays}`)
         // console.log(moment().subtract(1, 'years').calendar())
       },
     },
