@@ -116,9 +116,17 @@ export default new Vuex.Store({
     GET_CALLRAIL_CALLS (state, payload) {
       state.callrail_calls = payload
     },
+    UNSET_CALLRAIL_CALLS (state) {
+      state.callrail_calls = []
+    },
     ADD_FOLLOW_UP (state, payload) {
       const followUp = { ...payload, icon: 'mdi-clock' }
       state.callrail_calls.find(lead => lead.id === payload.lead_id).follow_ups.unshift(followUp)
+    },
+    UPDATE_LEAD_STATUS (state, payload) {
+      state.callrail_calls = [
+        ...state.callrail_calls.map(call => call.id !== payload.id ? call : { ...call, ...payload }),
+      ]
     },
   },
   actions: {
@@ -246,11 +254,12 @@ export default new Vuex.Store({
         })
     },
 
-    getProfileCallrail (context) {
+    getProfileCallrail (context, payload) {
+      // context.commit('UNSET_CALLRAIL_CALLS')
       return new Promise((resolve, reject) => {
         siteUrlAPI.get('/sanctum/csrf-cookie')
           .then(() => {
-            siteUrlAPI.get('/api/leads')
+            siteUrlAPI.get(`/api/leads?date=${payload.value}`)
             .then(leads => {
               localStorage.setItem('callrail_calls', JSON.stringify(leads.data))
               context.commit('GET_CALLRAIL_CALLS', leads.data)
@@ -265,7 +274,7 @@ export default new Vuex.Store({
     getUserCallrail ({ commit }, payload) {
       return new Promise((resolve, reject) => {
         callRailUrlAPI
-          .get(`/calls.json?fields=tags,source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location,formatted_business_phone_number&company_id=${payload.companyId}&tags=New Customer&per_page=250&page=${payload.currentPage}&date_range=all_time`)
+          .get(`/calls.json?fields=tags,source_name,company_name,formatted_tracking_source,formatted_tracking_phone_number,note,formatted_customer_name_or_phone_number,formatted_customer_phone_number,formatted_customer_location,formatted_business_phone_number&company_id=${payload.companyId}&per_page=250&page=${payload.currentPage}&date_range=all_time`)
             .then(response => resolve(response))
             .catch(error => reject(error.errors))
         })
@@ -288,7 +297,10 @@ export default new Vuex.Store({
           lead_id: payload.id,
           status: payload.status,
         })
-          .then(lead => resolve(lead))
+          .then(lead => {
+            // commit('UPDATE_LEAD_STATUS', lead)
+            resolve(lead)
+          })
           .catch(error => reject(error.errors))
       })
     },

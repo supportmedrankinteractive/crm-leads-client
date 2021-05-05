@@ -4,7 +4,7 @@
       :items="status"
       v-model="leadStatus"
       @change="changeStatus"
-      :value="lead.status"
+      :value="leadStatus"
       label="Status"
       min-height=2
       dense

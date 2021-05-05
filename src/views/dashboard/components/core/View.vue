@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <v-rows>
+    <!-- <v-rows>
       <v-col
         cols="12"
       >
@@ -18,7 +18,7 @@
           @change="getFilteredDate"
         />
       </v-col>
-    </v-rows>
+    </v-rows> -->
     <router-view />
 
     <dashboard-core-footer />
