@@ -167,7 +167,7 @@
   import { DonutChart, LineChart, BarChart } from 'vue-morris'
   import { mapGetters } from 'vuex'
   import moment from 'moment'
-  import lodash from 'lodash'
+  // import lodash from 'lodash'
   import { _ } from 'vue-underscore'
   // import LineChartJs from '../chart-js/LineChart'
 
@@ -306,6 +306,7 @@
         },
         sourceData: [],
         sourceLabel: [],
+        filtered: null,
       }
     },
     computed: {
@@ -332,22 +333,22 @@
         // this.filterData()
         this.getCityColor()
         // this.callrails = val
-        console.log(`from watcher ${val}`)
+        // console.log(`from watcher ${val}`)
       },
     },
     async mounted () {
-      console.log('outside undefined')
+      // console.log('outside undefined')
       // await this.$store.dispatch('getProfileCallrail')
       if (typeof (this.$store.state.callrail_calls.calls) === 'undefined') {
         // if (_.isEmpty(this.$store.state.callrail_calls)) {
         // await this.$store.dispatch('getProfileCallrail')
         this.filterData()
-        console.log('inside undefined', lodash.isEmpty(this.$store.state.callrail_calls))
+        // console.log('inside undefined', lodash.isEmpty(this.$store.state.callrail_calls))
       }
     },
     methods: {
       hoverCallback (index, options, content, row) {
-        console.log(content, row)
+        // console.log(content, row)
         const source = Object.entries(row).map((src, idx) => {
           if (idx !== 0) {
             return `<div class="morris-hover-point" style='color: ${this.lineColors[idx - 1]}'>
@@ -461,8 +462,9 @@
             }
           })
         }
+        this.filtered = filtered
         // this.$store.commit('GET_CALLRAIL_CALLS', filtered)
-        console.log('filtered', filtered)
+        // console.log('filtered', filtered)
         // console.log(`filtered date is ${noOfDays}`)
         // console.log(moment().subtract(1, 'years').calendar())
       },
@@ -484,7 +486,7 @@
           acc[it.customer_city] = acc[it.customer_city] + 1 || 1
           return acc
         }, {})
-        console.log('group by city', groupByCity)
+        // console.log('group by city', groupByCity)
 
         Object.entries(groupByCity).forEach(city => {
           const cityPercentage = city[1] / this.getParsedCallrails.length * 100
@@ -535,7 +537,7 @@
           groups[date].push(game)
           return groups
         }, {})
-        console.log('date', groupByFormattedByDate)
+        // console.log('date', groupByFormattedByDate)
         this.sourceLabel = Object.keys(groupByFormattedByDate)
         const allSource = []
         const flattenedFormattedDateGroupByCity = Object.entries(groupByFormattedByDate).map(formattedDate => {
@@ -596,9 +598,9 @@
           backgroundColor: '#4caf50',
           borderWidth: 1,
         })
-        console.log(this.sourceData)
+        // console.log(this.sourceData)
         this.GoogleAdsLineChartData = GoogleAds
-        console.log('per date group by source', newArr)
+        // console.log('per date group by source', newArr)
 
         const GoogleMyBusiness = Object.entries(groupByFormattedByDate).map(formattedDate => {
           const fDate = formattedDate[1].reduce((acc, it) => {
@@ -629,7 +631,7 @@
           backgroundColor: '#9C27b0',
           borderWidth: 1,
         })
-        console.log(this.sourceData)
+        // console.log(this.sourceData)
         this.GoogleMyBusinessLineChartData = GoogleMyBusiness
 
         const GoogleOrganic = Object.entries(groupByFormattedByDate).map(formattedDate => {
@@ -661,7 +663,7 @@
           backgroundColor: '#7a92a3',
           borderWidth: 1,
         })
-        console.log(this.sourceData)
+        // console.log(this.sourceData)
         this.GoogleOrganicLineChartData = GoogleOrganic
 
         const OrganicSearch = Object.entries(groupByFormattedByDate).map(formattedDate => {
@@ -693,7 +695,7 @@
           backgroundColor: '#00CAE3',
           borderWidth: 1,
         })
-        console.log(this.sourceData)
+        // console.log(this.sourceData)
         this.OrganicSearchLineChartData = OrganicSearch
 
         const LocalSearch = Object.entries(groupByFormattedByDate).map(formattedDate => {
@@ -725,7 +727,7 @@
           backgroundColor: '#FF5252',
           borderWidth: 1,
         })
-        console.log(this.sourceData)
+        // console.log(this.sourceData)
         this.LocalSearchLineChartData = LocalSearch
 
         Object.keys(groupByFormattedSource).forEach(source => {
@@ -766,7 +768,7 @@
           // this.sourceLineChartsDataLabel = Object.keys(fDate)
           return { year: formattedDate[0], ...stringFDate }
         })
-        console.log('new status bar chart data', this.newStatusBarChart.data)
+        // console.log('new status bar chart data', this.newStatusBarChart.data)
         this.newStatusBarChart.data = _.sortBy(flattenedFormattedNewStatusGroupByCity, 'year') // flattenedFormattedNewStatusGroupByCity
 
         // const flattenedFormattedByTags = Object.entries(groupByFormattedByDate).map(formattedDate => {
