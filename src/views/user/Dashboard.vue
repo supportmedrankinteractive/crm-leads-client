@@ -180,7 +180,10 @@
     },
     data () {
       return {
-        date_range: '',
+        date_range: {
+          text: 'This Year',
+          value: 'this_year',
+        },
         items_date_range: [
           {
             text: 'Today',
