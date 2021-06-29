@@ -14,7 +14,7 @@
             class="pa-3 pa-md-5 mx-auto"
             light
           >
-            <pages-heading class="text-center display-3">
+            <pages-heading class="text-center text-h2">
               Register
             </pages-heading>
 
@@ -71,7 +71,7 @@
 
                   <div class="my-2" />
 
-                  <div class="text-center grey--text body-1 font-weight-light">
+                  <div class="text-center grey--text text-body-1 font-weight-light">
                     Or Be Classical
                   </div>
 
