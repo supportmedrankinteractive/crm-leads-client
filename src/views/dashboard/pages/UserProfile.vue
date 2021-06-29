@@ -13,7 +13,7 @@
           <template v-slot:after-heading>
             <div class="font-weight-light card-title mt-2">
               Edit Profile
-              <span class="body-1">— Complete your profile</span>
+              <span class="text-body-1">— Complete your profile</span>
             </div>
           </template>
 
@@ -116,11 +116,11 @@
           avatar="https://medrankinteractive.com/wp-content/uploads/2020/04/lamar-circle.png"
         >
           <v-card-text class="text-center">
-            <h6 class="display-1 mb-1 grey--text">
+            <h6 class="text-h4 mb-1 grey--text">
               CEO
             </h6>
 
-            <h4 class="display-2 font-weight-light mb-3 black--text">
+            <h4 class="text-h3 font-weight-light mb-3 black--text">
               Lamar Hull
             </h4>
 
