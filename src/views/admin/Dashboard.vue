@@ -15,7 +15,7 @@
       class="px-5 py-3"
     >
       <template v-slot:after-heading>
-        <div class="display-2 font-weight-light">
+        <div class="text-h3 font-weight-light">
           List of Clients
         </div>
       </template>
