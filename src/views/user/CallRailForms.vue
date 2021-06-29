@@ -18,7 +18,7 @@
         class="px-5 py-3"
       >
         <template v-slot:after-heading>
-          <div class="display-2 font-weight-light">
+          <div class="text-h3 font-weight-light">
             DataTables
           </div>
         </template>
@@ -66,7 +66,7 @@
                 <v-img src="https://demos.creative-tim.com/material-dashboard-pro/assets/img/faces/avatar.jpg" />
               </v-avatar>
 
-              <div class="display-2 font-weight-light mb-3 text--darken-2 grey--text">
+              <div class="text-h3 font-weight-light mb-3 text--darken-2 grey--text">
                 Tania Andrew
               </div>
 
