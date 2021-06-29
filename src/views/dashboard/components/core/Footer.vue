@@ -28,7 +28,7 @@
           cols="12"
           md="auto"
         >
-          <div class="body-1 font-weight-light pt-6 pt-md-0 text-center">
+          <div class="text-body-1 font-weight-light pt-6 pt-md-0 text-center">
             Med Rank Interactive &copy; All Rights Reserved
           </div>
         </v-col>
