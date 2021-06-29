@@ -163,7 +163,7 @@
                 <div class="d-flex flex-no-wrap justify-space-between">
                   <div>
                     <v-card-title
-                      class="headline"
+                      class="text-h5"
                       v-text="item.title"
                     />
 
