@@ -80,7 +80,7 @@
           <v-divider class="ma-3" />
 
           <div class="px-3">
-            <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
+            <div class="text-body-2 text-uppercase grey--text font-weight-bold mb-3">
               Other Cities - {{ (100 - totalPctOfTopFive).toFixed(1) }}%
             </div>
 
