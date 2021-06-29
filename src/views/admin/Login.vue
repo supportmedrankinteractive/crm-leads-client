@@ -15,7 +15,7 @@
         >
           <template v-slot:heading>
             <div class="text-center">
-              <h1 class="display-2 font-weight-bold mb-2">
+              <h1 class="text-h3 font-weight-bold mb-2">
                 Admin Login
               </h1>
 
