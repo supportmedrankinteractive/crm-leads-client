@@ -74,11 +74,11 @@
               {{ item.formatted_customer_phone_number }}
             </div>
           </template>
-          <template v-slot:item.tags="{ item }">
+          <!--<template v-slot:item.tags="{ item }">
             <div class="blue--text">
               {{ item.tags[0].name }}
             </div>
-          </template>
+          </template>-->
           <template v-slot:item.follow_ups="{ item }">
             <follow-ups
               v-if="item.follow_ups.length > 0"
@@ -187,10 +187,6 @@
         {
           text: 'Location',
           value: 'formatted_customer_location',
-        },
-        {
-          text: 'Tags',
-          value: 'tags',
         },
         {
           text: 'Follow Ups',
