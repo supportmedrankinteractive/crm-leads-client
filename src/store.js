@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    loading: true,
     barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
     barImage: 'https://demos.creative-tim.com/material-dashboard-pro/assets/img/sidebar-1.jpg',
     drawer: null,
@@ -73,6 +74,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    SET_LOADING (state, payload) {
+      state.loading = payload
+    },
     SET_BAR_IMAGE (state, payload) {
       state.barImage = payload
     },
@@ -246,16 +250,19 @@ export default new Vuex.Store({
     },
 
     getCallrailCompanies ({ commit }) {
+      commit('SET_LOADING', true)
       callRailUrlAPI
         .get('/companies.json?status=active')
         .then(response => {
           localStorage.setItem('companies', JSON.stringify(response.data))
           commit('GET_CALLRAIL_COMPANIES', response.data)
+          commit('SET_LOADING', false)
         })
     },
 
     getProfileCallrail (context, payload) {
       // context.commit('UNSET_CALLRAIL_CALLS')
+      context.commit('SET_LOADING', true)
       return new Promise((resolve, reject) => {
         siteUrlAPI.get('/sanctum/csrf-cookie')
           .then(() => {
@@ -263,6 +270,7 @@ export default new Vuex.Store({
             .then(leads => {
               localStorage.setItem('callrail_calls', JSON.stringify(leads.data))
               context.commit('GET_CALLRAIL_CALLS', leads.data)
+              context.commit('SET_LOADING', false)
               resolve(leads)
             })
             .catch(error => {
