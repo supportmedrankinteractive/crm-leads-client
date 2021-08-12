@@ -7,6 +7,13 @@
     flat
     height="75"
   >
+    <v-progress-linear
+      :active="$store.state.loading"
+      :indeterminate="$store.state.loading"
+      absolute
+      bottom
+      color="deep-purple accent-4"
+    ></v-progress-linear>
     <v-btn
       class="mr-3"
       elevation="1"
@@ -198,6 +205,7 @@
     },
 
     data: () => ({
+      loading: true,
       notifications: [
         'Mike John Responded to your email',
         'You have 5 new tasks',
