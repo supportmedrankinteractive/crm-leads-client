@@ -17,7 +17,8 @@ siteUrlAPI.interceptors.response.use(
   response => response,
   error => {
     if (error.response.status === 401) {
-      this.$store.dispatch('userLogout').then(() => this.$router.push({ name: 'User Login' }))
+      this.$store.dispatch('userLogout').then()
+      this.$router.push({ name: 'User Login' })
     }
     return Promise.reject(error)
   },
