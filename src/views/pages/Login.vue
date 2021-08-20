@@ -45,6 +45,7 @@
 
             <v-text-field
               v-model="password"
+              type="password"
               class="mb-8"
               color="secondary"
               label="Password..."
