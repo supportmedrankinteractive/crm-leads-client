@@ -17,7 +17,8 @@ siteUrlAPI.interceptors.response.use(
   response => response,
   error => {
     if (error.response.status === 401) {
-      this.$store.dispatch('userLogout').then()
+      alert('token has expired')
+      this.$store.dispatch('userLogout')
       this.$router.push({ name: 'User Login' })
     }
     return Promise.reject(error)
