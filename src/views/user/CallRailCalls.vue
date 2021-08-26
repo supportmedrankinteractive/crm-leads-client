@@ -256,6 +256,7 @@
 
       // console.log(moment().subtract(10, 'days').calendar('YYYY-MM-DD'))
       // alert(moment(date).format())
+      console.log('parsed', this.getParsedCallrails)
     },
     methods: {
       formatDate (value) {
