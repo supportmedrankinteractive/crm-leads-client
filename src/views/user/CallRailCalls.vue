@@ -43,7 +43,7 @@
 
         <v-data-table
           :headers="headers"
-          :items="_.sortBy(getParsedCallrails, 'start_time')"
+          :items="getParsedCallrails.sort((a,b) => new Date(b.start_time) - new Date(a.start_time))"
           :search.sync="search"
           :items-per-page="10"
           :page-count="page_count"
