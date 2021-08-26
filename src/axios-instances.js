@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from './store'
-// import router from './router'
+import router from './router/index.js'
 
 export const callRailUrlAPI = axios.create({
   baseURL: process.env.VUE_APP_CALLRAIL_BASE_URL,
@@ -21,8 +21,8 @@ siteUrlAPI.interceptors.response.use(
     if (error.response.status === 401) {
       alert('token has expired')
       store.dispatch('userLogout').then(response => alert('user logout'))
-      this.$store.commit('USER_LOGOUT')
-      this.$router.push({ name: 'User Login' })
+//       this.$store.commit('USER_LOGOUT')
+      router.push({ name: 'User Login' })
     }
     return Promise.reject(error)
   },
