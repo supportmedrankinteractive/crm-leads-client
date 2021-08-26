@@ -43,7 +43,7 @@
 
         <v-data-table
           :headers="headers"
-          :items="getParsedCallrails"
+          :items="_.sortBy(getParsedCallrails, 'start_time'"
           :search.sync="search"
           :items-per-page="10"
           :page-count="page_count"
@@ -149,6 +149,7 @@
 <script>
   import moment from 'moment'
   import { mapGetters } from 'vuex'
+  import { _ } from 'vue-underscore'
 
   export default {
     name: 'CallRailCalls',
