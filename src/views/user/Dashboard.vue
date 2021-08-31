@@ -810,7 +810,7 @@
   color: red !important;
 }
 #bar2 .morris-hover-point:nth-child(5) {
-    color: red !important;
+    color: red !important; 
 }
 /* .ct-series-a .ct-slice-pie {
   fill: blue !important;
