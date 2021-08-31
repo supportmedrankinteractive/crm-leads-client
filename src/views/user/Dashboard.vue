@@ -156,6 +156,8 @@
             grid="true"
             stacked="true"
             grid-text-weigth="bold"
+            :data-colors="lineColors"
+            :line-colors="lineColors"
           />
         </base-material-card>
       </v-col>
@@ -788,7 +790,7 @@
         // console.log('group by status', flattenedFormattedStatusGroupByCity)
         // console.log(this.getCityColor())
         // this.lineColors = this.getCityColor()
-        this.lineColors = ['#4caf50', '#9C27b0', 'blue', '#00CAE3', '#FF5252']
+        this.lineColors = ['#4caf50', '#9C27b0', 'blue', '#00CAE3', '#FF5252', 'black']
       },
     },
   }
