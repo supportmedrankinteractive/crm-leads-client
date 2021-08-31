@@ -156,8 +156,11 @@
             grid="true"
             stacked="true"
             grid-text-weigth="bold"
+            :pointFillColors="lineColors"
             :data-colors="lineColors"
             :line-colors="lineColors"
+            :trendLine="true"
+            :trendLineColors="lineColors"
           />
         </base-material-card>
       </v-col>
