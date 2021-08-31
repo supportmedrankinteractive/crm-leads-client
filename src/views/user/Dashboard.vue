@@ -809,6 +809,9 @@
 .morris-hover.morris-default-style .morris-hover-point:nth-child(3) {
   color: red !important;
 }
+#bar2 .morris-hover-point:nth-child(5) {
+    color: red !important;
+}
 /* .ct-series-a .ct-slice-pie {
   fill: blue !important;
 }
